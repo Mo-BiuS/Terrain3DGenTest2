@@ -11,7 +11,6 @@ var scaleWidth = 32
 
 func _ready() -> void:
 	noiseGenerator.setSeed(randi())
-	$MapHandler/ChunkHandler.genChunkRadius(0,0,8)
 
 func getGreyColor(value:float)->Color:
 	return Color(value,value,value)
@@ -19,4 +18,4 @@ func getGreyColor(value:float)->Color:
 
 func _on_character_body_3d_changed_chunk() -> void:
 	$CanvasLayer.setPos($CharacterBody3D.cPos.x,$CharacterBody3D.cPos.z)
-	$MapHandler/ChunkHandler.genChunkRadius($CharacterBody3D.cPos.x,$CharacterBody3D.cPos.z,4)
+	$MapHandler.genChunkRadius($CharacterBody3D.cPos.x,$CharacterBody3D.cPos.z,8)

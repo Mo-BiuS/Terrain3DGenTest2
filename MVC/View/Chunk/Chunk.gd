@@ -2,7 +2,7 @@ class_name Chunk extends Node3D
 
 var noiseGenerator:NoiseGenerator = NoiseGenerator.new()
 
-const SIZE = 64
+const SIZE = 32
 const SCALE_HEIGHT = 1024
 const SCALE_WIDTH = 16
 
@@ -13,7 +13,18 @@ var neighboor:Array[Chunk]
 
 var unload:bool
 
+var genThread:Thread = Thread.new()
+var isTerrainGen = false
+
+func _process(delta: float) -> void:
+	if(isTerrainGen && genThread.is_alive()):
+		genThread.wait_to_finish()
+
 func genTerrain()->void:
+	if(!isTerrainGen):
+		genThread.start(genTerrainThread.bind())
+
+func genTerrainThread()->void:
 	var surface_tool = SurfaceTool.new();
 	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES);
 	var v = 0;
@@ -53,7 +64,9 @@ func genTerrain()->void:
 	mesh.material_overlay.vertex_color_use_as_albedo = true
 	mesh.create_convex_collision()
 	
-	add_child(mesh)
+	if(is_instance_valid(self) && is_instance_valid(mesh)):
+		call_deferred("add_child",mesh)
+	isTerrainGen = true
 
 func setPos(x:int,y:int)->void:
 	posX = x*SIZE*SCALE_WIDTH

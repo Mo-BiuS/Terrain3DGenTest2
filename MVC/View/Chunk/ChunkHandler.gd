@@ -2,8 +2,7 @@ class_name ChunkHandler extends Node3D
 
 var loadedChunk:Dictionary
 
-func genChunkRadius(posX:int,posY:int,radius:int)->void:
-	
+func genChunkRadius(posX:int,posY:int,radius:int):
 	for i in loadedChunk.values():
 		i.unload = true
 	
@@ -15,12 +14,17 @@ func genChunkRadius(posX:int,posY:int,radius:int)->void:
 				else:
 					var chunk:Chunk = Chunk.new()
 					chunk.setPos(x+posX,y+posY)
-					chunk.genTerrain()
 					chunk.unload = false
-					add_child(chunk)
+					add_child(chunk,true)
 					loadedChunk[Vector2i(x+posX,y+posY)] = chunk
 	
 	for i in loadedChunk.values():
 		if i.unload :
-			remove_child(i)
+			i.queue_free()
 			loadedChunk.erase(i.getPosition())
+
+func genTerrainAll()->void:
+	for i in loadedChunk.values():
+		if(i is Chunk):
+			i.genTerrain()
+			
