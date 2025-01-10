@@ -4,6 +4,10 @@ extends CharacterBody3D
 const SPEED = 800
 const JUMP_VELOCITY = 800
 
+var cPos:Vector3i
+
+signal changedChunk
+
 # Get the gravity from the project settings to be synced with RigidDynamicBody nodes.
 var gravity: float = 1000
 @onready var neck := $Neck
@@ -18,7 +22,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event is InputEventMouseMotion:
 			neck.rotate_y(-event.relative.x * 0.01)
 			camera.rotate_x(-event.relative.y * 0.01)
-			camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-30), deg_to_rad(60))
+			camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-60), deg_to_rad(60))
 
 
 func _physics_process(delta: float) -> void:
@@ -33,3 +37,14 @@ func _physics_process(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	move_and_slide()
+	
+	var nPos:Vector3 = position/(Chunk.SIZE*Chunk.SCALE_WIDTH-Chunk.SIZE/2)
+	if(nPos.x < 0):nPos.x-=1
+	if(nPos.z < 0):nPos.z-=1
+	var iPos:Vector3i =  Vector3i(nPos)
+	
+	if iPos != cPos:
+		cPos = iPos
+		changedChunk.emit()
+	else:cPos = iPos
+	
