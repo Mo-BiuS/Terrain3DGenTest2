@@ -1,4 +1,4 @@
-class_name ChunkHandler extends Node3D
+class_name ChunkHandler extends Node
 
 var loadedChunk:Dictionary
 
@@ -6,8 +6,8 @@ func genChunkRadius(posX:int,posY:int,radius:int):
 	for i in loadedChunk.values():
 		i.unload = true
 	
-	for x in range(-radius/2,radius/2+1):
-		for y in range(-radius/2,radius/2+1):
+	for x in range(-radius,radius+1):
+		for y in range(-radius,radius+1):
 			if(sqrt(pow(x,2)+pow(y,2)) < radius):
 				if loadedChunk.has(Vector2i(x+posX,y+posY)):
 					loadedChunk.get(Vector2i(x+posX,y+posY)).unload = false
@@ -20,11 +20,11 @@ func genChunkRadius(posX:int,posY:int,radius:int):
 	
 	for i in loadedChunk.values():
 		if i.unload :
-			i.queue_free()
+			remove_child(i)
 			loadedChunk.erase(i.getPosition())
 
-func genTerrainAll()->void:
+func genTerrainAll(seed)->void:
 	for i in loadedChunk.values():
 		if(i is Chunk):
-			i.genTerrain()
+			i.genTerrain(seed)
 			

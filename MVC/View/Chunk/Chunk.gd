@@ -3,8 +3,8 @@ class_name Chunk extends Node3D
 var noiseGenerator:NoiseGenerator = NoiseGenerator.new()
 
 const SIZE = 32
-const SCALE_HEIGHT = 1024
-const SCALE_WIDTH = 16
+const SCALE_HEIGHT = 128
+const SCALE_WIDTH = 2
 
 var posX:int
 var posY:int
@@ -20,15 +20,16 @@ func _process(delta: float) -> void:
 	if(isTerrainGen && genThread.is_alive()):
 		genThread.wait_to_finish()
 
-func genTerrain()->void:
-	if(!isTerrainGen):
-		genThread.start(genTerrainThread.bind())
+func genTerrain(seed:int)->void:
+	if(!isTerrainGen && !genThread.is_alive()):
+		genThread.start(genTerrainThread.bind(seed))
 
-func genTerrainThread()->void:
+func genTerrainThread(seed:int)->void:
 	var surface_tool = SurfaceTool.new();
 	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES);
 	var v = 0;
 	
+	noiseGenerator.setSeed(seed)
 	noiseGenerator.genNoiseMap(posX/SCALE_WIDTH,posY/SCALE_WIDTH, SIZE+1, SIZE+1)
 	var map:Image = noiseGenerator.map
 	
@@ -62,7 +63,7 @@ func genTerrainThread()->void:
 	mesh.mesh = surface_tool.commit()
 	mesh.material_overlay = StandardMaterial3D.new()
 	mesh.material_overlay.vertex_color_use_as_albedo = true
-	mesh.create_convex_collision()
+	mesh.create_trimesh_collision()
 	
 	if(is_instance_valid(self) && is_instance_valid(mesh)):
 		call_deferred("add_child",mesh)

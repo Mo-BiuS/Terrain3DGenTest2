@@ -1,0 +1,50 @@
+[gd_scene load_steps=11 format=3 uid="uid://2cr8pxiw45lg"]
+
+[ext_resource type="Script" path="res://MVC/Control/Game/Game.gd" id="1_7wh2w"]
+[ext_resource type="Script" path="res://MVC/MapHandler.gd" id="2_iahu4"]
+[ext_resource type="Script" path="res://MVC/View/Chunk/ChunkHandler.gd" id="3_rav8a"]
+[ext_resource type="Script" path="res://MVC/character_body_3d.gd" id="4_6qdp4"]
+[ext_resource type="Script" path="res://MVC/Control/Game/PlayerHandler.gd" id="4_sx16o"]
+[ext_resource type="Script" path="res://MVC/Control/Game/NoiseGenerator.gd" id="5_hn7q0"]
+[ext_resource type="PackedScene" uid="uid://crrqcc6236i3u" path="res://MVC/View/Game/GameUI.tscn" id="7_epbpw"]
+[ext_resource type="Script" path="res://MVC/View/Game/GameUI.gd" id="8_4p0gx"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_csh4g"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pv6x0"]
+
+[node name="Game" type="Node"]
+script = ExtResource("1_7wh2w")
+
+[node name="MapHandler" type="Node" parent="."]
+script = ExtResource("2_iahu4")
+
+[node name="ChunkHandler" type="Node" parent="MapHandler"]
+script = ExtResource("3_rav8a")
+
+[node name="PlayerHandler" type="Node" parent="."]
+script = ExtResource("4_sx16o")
+
+[node name="Player" type="CharacterBody3D" parent="PlayerHandler"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1024, 0)
+script = ExtResource("4_6qdp4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerHandler/Player"]
+mesh = SubResource("CapsuleMesh_csh4g")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerHandler/Player"]
+shape = SubResource("CapsuleShape3D_pv6x0")
+
+[node name="Neck" type="Node3D" parent="PlayerHandler/Player"]
+
+[node name="Camera3d" type="Camera3D" parent="PlayerHandler/Player/Neck"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 4, 4)
+far = 16384.0
+
+[node name="NoiseGenerator" type="Node" parent="."]
+script = ExtResource("5_hn7q0")
+
+[node name="GameUI" parent="." instance=ExtResource("7_epbpw")]
+script = ExtResource("8_4p0gx")
+
+[connection signal="changedChunk" from="PlayerHandler/Player" to="PlayerHandler" method="_on_character_body_3d_changed_chunk"]
