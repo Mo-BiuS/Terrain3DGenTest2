@@ -13,10 +13,10 @@ func genChunkRadius(posX:int,posY:int,radius:int,seed:int):
 				if loadedChunk.has(Vector2i(x+posX,y+posY)):
 					var chunk:Chunk = loadedChunk.get(Vector2i(x+posX,y+posY))
 					chunk.unload = false
-					chunk.newDist = dist
+					chunk.dist = dist
 				else:
 					var chunk:Chunk = Chunk.new()
-					chunk.newDist = dist
+					chunk.dist = dist
 					chunk.setPos(x+posX,y+posY)
 					chunk.unload = false
 					add_child(chunk,true)

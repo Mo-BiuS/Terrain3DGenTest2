@@ -4,4 +4,4 @@ class_name MapHandler extends Node
 @onready var chunckHandler:ChunkHandler = $ChunkHandler
 
 func changedChunk(posX, posY) -> void:
-	chunckHandler.genChunkRadius(posX,posY,32,game.seed)
+	chunckHandler.genChunkRadius(posX,posY,16,game.seed)
