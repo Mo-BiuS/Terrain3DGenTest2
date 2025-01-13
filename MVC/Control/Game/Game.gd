@@ -5,8 +5,7 @@ class_name Game extends Node
 @onready var noiseGenerator:NoiseGenerator = $NoiseGenerator
 @onready var gui:GameUI = $GameUI
 
-func setSeed(seed:int):
-	noiseGenerator.setSeed(seed)
+var seed:int
 
 func changedChunk(x:int, y:int):
 	gui.setChunkPos(x,y)

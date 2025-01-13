@@ -1,8 +1,7 @@
 class_name MapHandler extends Node
 
+@onready var game:Game = $".."
 @onready var chunckHandler:ChunkHandler = $ChunkHandler
-@onready var noiseGenerator:NoiseGenerator = $"../NoiseGenerator"
 
 func changedChunk(posX, posY) -> void:
-	chunckHandler.genChunkRadius(posX,posY,6)
-	chunckHandler.genTerrainAll(noiseGenerator.getSeed())
+	chunckHandler.genChunkRadius(posX,posY,32,game.seed)

@@ -11,7 +11,7 @@ func getSeed()->int:
 	return noise.seed
 
 func genNoiseMap(posX:int,posY:int,rX:int,rY:int)->void:
-	noise.frequency = 0.005
+	noise.frequency = 0.0015
 	noise.fractal_lacunarity = 2
 	noise.offset = Vector3(posX,posY,0)
 	map = noise.get_image(rX,rY,false,false,false)
