@@ -51,4 +51,4 @@ func _physics_process(delta: float) -> void:
 		changedChunk.emit(iPos.x, iPos.z)
 	cPos = iPos
 	
-	if(cPos.y < 0):position.y = 500
+	if(cPos.y <= -64):position.y = 512

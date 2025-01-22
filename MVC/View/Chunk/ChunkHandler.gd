@@ -3,6 +3,7 @@ class_name ChunkHandler extends Node
 var loadedChunk:Dictionary
 
 func genChunkRadius(posX:int,posY:int,radius:int,seed:int):
+	
 	for i in loadedChunk.values():
 		i.unload = true
 	
@@ -26,6 +27,8 @@ func genChunkRadius(posX:int,posY:int,radius:int,seed:int):
 		if i.unload :
 			remove_child(i)
 			loadedChunk.erase(i.getPosition())
+			i.queue_free()
+	
 	
 	for i in loadedChunk.values():
 		i.genTerrain(seed)

@@ -14,7 +14,12 @@ var dist:float
 var oldDetails:int = -1
 var newDetails:int = 0
 
+var neighbors:Array[Chunk]
+
 var unload:bool
+
+var baseMap:Image
+var hillMap:Image
 
 var genThread:Thread = Thread.new()
 
@@ -26,10 +31,6 @@ func genTerrain(seed:int)->void:
 	if(oldDetails == newDetails):return
 	oldDetails = newDetails
 	
-	if(terrainMesh != null):
-		terrainMesh.queue_free()
-		terrainMesh = null
-	
 	genThread = Thread.new()
 	genThread.start(genTerrainThread.bind(seed))
 
@@ -40,9 +41,9 @@ func genTerrainThread(seed:int)->void:
 	var v = 0;
 	
 	noiseGenerator.setSeed(seed)
-	noiseGenerator.genNoiseMap(posX/SCALE_WIDTH,posY/SCALE_WIDTH, SIZE*2+1, SIZE*2+1)
+	if(baseMap == null):baseMap = noiseGenerator.genBaseMap(posX/SCALE_WIDTH,posY/SCALE_WIDTH, SIZE+1, SIZE+1)
+	if(hillMap == null):hillMap = noiseGenerator.genHillMap(posX/SCALE_WIDTH,posY/SCALE_WIDTH, SIZE+1, SIZE+1)
 	
-	var map:Image = noiseGenerator.map
 	for x in range(SIZE/newDetails):
 		for y in range(SIZE/newDetails):
 			var px = x*newDetails
@@ -53,7 +54,10 @@ func genTerrainThread(seed:int)->void:
 			var montainColor:Color = Color(c,c,c)
 				
 			for i in [Vector2(0,0),Vector2(newDetails,0),Vector2(newDetails,newDetails),Vector2(0,newDetails)]:
-				var value:float = map.get_pixel(px+i.x,py+i.y).r
+				var value:float = 0.0
+				value += baseMap.get_pixel(px+i.x,py+i.y).r
+				value += hillMap.get_pixel(px+i.x,py+i.y).r*.1
+				if(value < .46): value = .46
 				
 				if(value < .5):surface_tool.set_color(sandColor)
 				elif(value < .7):surface_tool.set_color(grassColor)
@@ -72,6 +76,8 @@ func genTerrainThread(seed:int)->void:
 	
 	surface_tool.generate_normals()
 	
+	var oldTerrainMesh = terrainMesh
+	
 	terrainMesh = MeshInstance3D.new()
 	terrainMesh.material_overlay = StandardMaterial3D.new()
 	terrainMesh.material_overlay.vertex_color_use_as_albedo = true
@@ -80,6 +86,7 @@ func genTerrainThread(seed:int)->void:
 	
 	if(is_instance_valid(self)):
 		call_deferred("add_child",terrainMesh)
+		if(oldTerrainMesh!=null):oldTerrainMesh.queue_free()
 
 func setPos(x:int,y:int)->void:
 	posX = x*SIZE*SCALE_WIDTH
@@ -89,6 +96,6 @@ func getPosition()->Vector2i:
 	return Vector2i(posX,posY)/SIZE/SCALE_WIDTH
 func calcNewDetails():
 	if dist <= 1.5: newDetails = 1
-	if dist <= 3: newDetails = 2
-	if dist <= 6: newDetails = 4
+	elif dist <= 2.5: newDetails = 8
+	elif dist <= 3.5: newDetails = 16
 	else: newDetails = 32
