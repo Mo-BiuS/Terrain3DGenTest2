@@ -48,10 +48,9 @@ func genTerrainThread(seed:int)->void:
 		for y in range(SIZE/newDetails):
 			var px = x*newDetails
 			var py = y*newDetails
-			var grassColor:Color = Color(.2, randf_range(.6,1), .2)
-			var sandColor:Color = Color(randf_range(.80,.90),randf_range(.80,.90),randf_range(.60,.70))
-			var c = randf_range(.2,.6)
-			var montainColor:Color = Color(c,c,c)
+			var grassColor:Color = Color(.2, .6, .2)
+			var sandColor:Color = Color(.8,.8,.6)
+			var montainColor:Color = Color(.4,.4,.4)
 				
 			for i in [Vector2i(0,0),Vector2i(newDetails,0),Vector2i(newDetails,newDetails),Vector2i(0,newDetails)]:
 				var value:float = 0.0
@@ -70,6 +69,7 @@ func genTerrainThread(seed:int)->void:
 					value = lerp(getMapValue(int((px+i.x)/nd)*nd,SIZE),getMapValue(int((px+i.x)/nd+1)*nd,SIZE),float((px+i.x)%nd)/nd)
 				else:
 					value = getMapValue(px+i.x,py+i.y)
+				
 				
 				if(value < .5):surface_tool.set_color(sandColor)
 				elif(value < .7):surface_tool.set_color(grassColor)
@@ -95,6 +95,7 @@ func genTerrainThread(seed:int)->void:
 	terrainMesh.material_overlay.vertex_color_use_as_albedo = true
 	terrainMesh.mesh = surface_tool.commit()
 	terrainMesh.create_trimesh_collision()
+	
 	
 	if(is_instance_valid(self)):
 		call_deferred("add_child",terrainMesh)
