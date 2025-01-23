@@ -6,7 +6,9 @@ class_name Game extends Node
 
 var seed:int
 
+func _ready() -> void:
+	mapHandler.changedChunk(0,0)
 
 func changedChunk(x:int, y:int):
 	gui.setChunkPos(x,y)
-	mapHandler.changedChunk(x,y)
+	#mapHandler.changedChunk(x,y)

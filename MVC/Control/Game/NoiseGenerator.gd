@@ -17,7 +17,7 @@ func genBaseMap(posX:int,posY:int,rX:int,rY:int)->Image:
 	noise.seed = seed
 	noise.noise_type = noise.TYPE_PERLIN
 	noise.fractal_octaves = 5 #default 5
-	noise.frequency = 0.01 #default 0.01
+	noise.frequency = 0.005 #default 0.01
 	noise.fractal_lacunarity = 2.0 #default 2.0
 	noise.fractal_gain = 0.5 #default 0.5
 	noise.offset = Vector3(posX,posY,0)
@@ -27,8 +27,8 @@ func genHillMap(posX:int,posY:int,rX:int,rY:int)->Image:
 	noise.seed = seed
 	noise.noise_type = noise.TYPE_PERLIN
 	noise.fractal_octaves = 5 #default 5
-	noise.frequency = 0.05 #default 0.01
-	noise.fractal_lacunarity = 1 #default 2.0
+	noise.frequency = 0.01 #default 0.01
+	noise.fractal_lacunarity = 2.0 #default 2.0
 	noise.fractal_gain = 0.5 #default 0.5
 	noise.offset = Vector3(posX,posY,0)
 	return noise.get_image(rX,rY,false,false,false)

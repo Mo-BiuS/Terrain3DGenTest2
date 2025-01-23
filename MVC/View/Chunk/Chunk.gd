@@ -14,7 +14,7 @@ var dist:float
 var oldDetails:int = -1
 var newDetails:int = 0
 
-var neighbors:Array[Chunk]
+var neighbors:Array[Chunk] = [null,null,null,null]
 
 var unload:bool
 
@@ -53,11 +53,23 @@ func genTerrainThread(seed:int)->void:
 			var c = randf_range(.2,.6)
 			var montainColor:Color = Color(c,c,c)
 				
-			for i in [Vector2(0,0),Vector2(newDetails,0),Vector2(newDetails,newDetails),Vector2(0,newDetails)]:
+			for i in [Vector2i(0,0),Vector2i(newDetails,0),Vector2i(newDetails,newDetails),Vector2i(0,newDetails)]:
 				var value:float = 0.0
-				value += baseMap.get_pixel(px+i.x,py+i.y).r
-				value += hillMap.get_pixel(px+i.x,py+i.y).r*.1
-				if(value < .46): value = .46
+				
+				if(px + i.x == 0 && neighbors[0] != null && newDetails < neighbors[0].newDetails):
+					var nd = neighbors[0].newDetails
+					value = lerp(getMapValue(0,int((py+i.y)/nd)*nd),getMapValue(0,int((py+i.y)/nd+1)*nd),float((py+i.y)%nd)/nd)
+				elif(px + i.x == SIZE && neighbors[2] != null && newDetails < neighbors[2].newDetails):
+					var nd = neighbors[2].newDetails
+					value = lerp(getMapValue(SIZE,int((py+i.y)/nd)*nd),getMapValue(SIZE,int((py+i.y)/nd+1)*nd),float((py+i.y)%nd)/nd)
+				elif(py + i.y == 0 && neighbors[3] != null && newDetails < neighbors[3].newDetails):
+					var nd = neighbors[3].newDetails
+					value = lerp(getMapValue(int((px+i.x)/nd)*nd,0),getMapValue(int((px+i.x)/nd+1)*nd,0),float((px+i.x)%nd)/nd)
+				elif(py + i.y == SIZE && neighbors[1] != null && newDetails < neighbors[1].newDetails):
+					var nd = neighbors[1].newDetails
+					value = lerp(getMapValue(int((px+i.x)/nd)*nd,SIZE),getMapValue(int((px+i.x)/nd+1)*nd,SIZE),float((px+i.x)%nd)/nd)
+				else:
+					value = getMapValue(px+i.x,py+i.y)
 				
 				if(value < .5):surface_tool.set_color(sandColor)
 				elif(value < .7):surface_tool.set_color(grassColor)
@@ -87,6 +99,9 @@ func genTerrainThread(seed:int)->void:
 	if(is_instance_valid(self)):
 		call_deferred("add_child",terrainMesh)
 		if(oldTerrainMesh!=null):oldTerrainMesh.queue_free()
+
+func getMapValue(posX, posY)->float:
+	return baseMap.get_pixel(posX,posY).r + hillMap.get_pixel(posX, posY).r*.1
 
 func setPos(x:int,y:int)->void:
 	posX = x*SIZE*SCALE_WIDTH
