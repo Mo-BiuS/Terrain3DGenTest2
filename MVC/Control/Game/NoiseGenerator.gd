@@ -15,13 +15,14 @@ func getSeed()->int:
 
 func genBaseMap(posX:int,posY:int,rX:int,rY:int)->Image:
 	noise.seed = seed
-	noise.noise_type = noise.TYPE_PERLIN
-	noise.fractal_octaves = 5 #default 5
-	noise.frequency = 0.005 #default 0.01
+	noise.noise_type = noise.TYPE_SIMPLEX_SMOOTH
+	noise.fractal_octaves = 6 #default 5
+	noise.frequency = 0.001 #default 0.01
 	noise.fractal_lacunarity = 2.0 #default 2.0
-	noise.fractal_gain = 0.5 #default 0.5
+	noise.fractal_gain = .5 #default 0.5
 	noise.offset = Vector3(posX,posY,0)
-	return noise.get_image(rX,rY,false,false,false)
+	var img:Image = noise.get_image(rX,rY,false,false,false)
+	return img
 
 func genHillMap(posX:int,posY:int,rX:int,rY:int)->Image:
 	noise.seed = seed

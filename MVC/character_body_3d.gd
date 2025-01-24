@@ -10,8 +10,16 @@ signal changedChunk(posX:int, posY:int)
 
 # Get the gravity from the project settings to be synced with RigidDynamicBody nodes.
 var gravity: float = 64
-@onready var neck := $Neck
-@onready var camera := $Neck/Camera3d
+@onready var neck:Node3D = $Neck
+@onready var camera:Camera3D = $Neck/Camera3d
+@onready var cameraRayCast:RayCast3D = $Neck/RayCast3D
+
+func _process(delta: float) -> void:
+	cameraRayCast.force_raycast_update()
+	if cameraRayCast.is_colliding():
+		camera.position.z = cameraRayCast.to_local(cameraRayCast.get_collision_point()).z-1
+	else:
+		camera.position.z = 8
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -23,7 +31,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			neck.rotation.y = neck.rotation.y - event.relative.x * 0.01
 			neck.rotation.x = neck.rotation.x - event.relative.y * 0.005
 			#neck.rotation.z = 0
-			neck.rotation.x = clamp(neck.rotation.x, deg_to_rad(-60), deg_to_rad(60))
+			neck.rotation.x = clamp(neck.rotation.x, deg_to_rad(-60), deg_to_rad(30))
 
 
 func _physics_process(delta: float) -> void:
@@ -52,5 +60,5 @@ func _physics_process(delta: float) -> void:
 		changedChunk.emit(iPos.x, iPos.z)
 	cPos = iPos
 	
-	if(position.y <= -128):
-		position.y = 128
+	if(position.y <= -256):
+		position.y = 256

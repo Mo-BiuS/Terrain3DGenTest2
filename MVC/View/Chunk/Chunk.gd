@@ -154,7 +154,7 @@ func getNeighborDiff()->Array[bool]:
 	if(neighbors[3] != null): rep[3] = newDetails < neighbors[3].newDetails
 	return rep
 func getMapValue(x, y)->float:
-	return baseMap.get_pixel(x,y).r + hillMap.get_pixel(x, y).r*.1
+	return baseMap.get_pixel(x,y).r #+ hillMap.get_pixel(x, y).r*.1 +.4
 
 func setPos(x:int,y:int)->void:
 	posX = x*SIZE*SCALE_WIDTH

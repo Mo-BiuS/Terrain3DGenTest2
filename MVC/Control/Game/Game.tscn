@@ -13,8 +13,12 @@
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pv6x0"]
 
 [sub_resource type="Environment" id="Environment_1ldod"]
+reflected_light_source = 2
+ssao_enabled = true
+ssao_radius = 2.0
+ssao_intensity = 4.0
 fog_enabled = true
-fog_density = 0.0008
+fog_density = 0.0016
 
 [node name="Game" type="Node"]
 script = ExtResource("1_7wh2w")
@@ -30,6 +34,7 @@ script = ExtResource("4_sx16o")
 
 [node name="Player" type="CharacterBody3D" parent="PlayerHandler"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 128, 0)
+collision_layer = 2
 script = ExtResource("4_6qdp4")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerHandler/Player"]
@@ -39,10 +44,14 @@ mesh = SubResource("CapsuleMesh_csh4g")
 shape = SubResource("CapsuleShape3D_pv6x0")
 
 [node name="Neck" type="Node3D" parent="PlayerHandler/Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
 
 [node name="Camera3d" type="Camera3D" parent="PlayerHandler/Player/Neck"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 8)
 far = 16384.0
+
+[node name="RayCast3D" type="RayCast3D" parent="PlayerHandler/Player/Neck"]
+target_position = Vector3(0, 0, 8)
 
 [node name="OmniLight3D" type="OmniLight3D" parent="PlayerHandler/Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 256, 0)
