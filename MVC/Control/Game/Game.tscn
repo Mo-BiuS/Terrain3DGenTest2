@@ -14,7 +14,7 @@
 
 [sub_resource type="Environment" id="Environment_1ldod"]
 fog_enabled = true
-fog_density = 0.0004
+fog_density = 0.0008
 
 [node name="Game" type="Node"]
 script = ExtResource("1_7wh2w")

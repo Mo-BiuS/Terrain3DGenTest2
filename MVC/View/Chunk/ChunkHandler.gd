@@ -14,10 +14,10 @@ func genChunkRadius(posX:int,posY:int,radius:int,seed:int):
 				if loadedChunk.has(Vector2i(x+posX,y+posY)):
 					var chunk:Chunk = loadedChunk.get(Vector2i(x+posX,y+posY))
 					chunk.unload = false
-					chunk.dist = dist
+					chunk.calcNewDetails(dist)
 				else:
 					var chunk:Chunk = Chunk.new()
-					chunk.dist = dist
+					chunk.calcNewDetails(dist)
 					chunk.setPos(x+posX,y+posY)
 					chunk.unload = false
 					add_child(chunk,true)
@@ -33,7 +33,6 @@ func genChunkRadius(posX:int,posY:int,radius:int,seed:int):
 		for y in range(-radius,radius+1):
 			var i = loadedChunk.get(Vector2i(x,y))
 			if(i != null && i is Chunk):
-				for j in range(4):i.neighbors.append(null)
 				if(loadedChunk.has(Vector2i(x-1,y))):i.neighbors[0] = loadedChunk.get(Vector2i(x-1,y))
 				if(loadedChunk.has(Vector2i(x,y+1))):i.neighbors[1] = loadedChunk.get(Vector2i(x,y+1))
 				if(loadedChunk.has(Vector2i(x+1,y))):i.neighbors[2] = loadedChunk.get(Vector2i(x+1,y))
@@ -41,3 +40,7 @@ func genChunkRadius(posX:int,posY:int,radius:int,seed:int):
 	
 	for i in loadedChunk.values():
 		i.genTerrain(seed)
+
+func getChunkDetailsLevel(x:int,y:int)->int:
+	if(loadedChunk.has(Vector2i(x,y))):return loadedChunk.get(Vector2i(x,y)).newDetails
+	return -1

@@ -1,7 +1,7 @@
 extends CharacterBody3D
 
 
-const SPEED = 32
+const SPEED = 24 #Normal 24
 const JUMP_VELOCITY = 32
 
 var cPos:Vector3i

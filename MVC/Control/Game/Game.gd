@@ -14,5 +14,5 @@ func _process(delta: float) -> void:
 	gui.setPlayerPos(player.position.x,player.position.y,player.position.z)
 
 func changedChunk(x:int, y:int):
-	gui.setChunkPos(x,y)
+	gui.setChunkPos(x,y,mapHandler.getChunkDetailsLevel(x,y))
 	mapHandler.changedChunk(x,y)
