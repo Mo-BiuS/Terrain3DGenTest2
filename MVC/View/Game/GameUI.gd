@@ -4,7 +4,7 @@ class_name GameUI extends CanvasLayer
 @onready var fpsLabel:Label = $VBoxContainer/FpsLabel
 @onready var playerPosLabel:Label = $VBoxContainer/PlayerPosLabel
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	fpsLabel.text = "FPS : "+str(Engine.get_frames_per_second())
 
 func setChunkPos(x:int, y:int, details:int):

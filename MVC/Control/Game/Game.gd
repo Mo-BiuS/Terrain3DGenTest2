@@ -10,7 +10,7 @@ var seed:int
 func _ready() -> void:
 	mapHandler.changedChunk(0,0)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	gui.setPlayerPos(player.position.x,player.position.y,player.position.z)
 
 func changedChunk(x:int, y:int):

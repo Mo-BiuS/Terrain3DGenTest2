@@ -26,9 +26,9 @@ var unload:bool
 var baseMap:Image
 var hillMap:Image
 
-var genThread:Thread = Thread.new()
-
 func genTerrain(seed:int)->void:
+	if(!is_instance_valid(self)):return
+	
 	noiseGenerator.setSeed(seed)
 	if(baseMap == null):baseMap = noiseGenerator.genBaseMap(posX/SCALE_WIDTH,posY/SCALE_WIDTH, SIZE+1, SIZE+1)
 	if(hillMap == null):hillMap = noiseGenerator.genHillMap(posX/SCALE_WIDTH,posY/SCALE_WIDTH, SIZE+1, SIZE+1)
@@ -47,6 +47,7 @@ func genTerrainInner()->void:
 	
 	for x in range(1,SIZE/newDetails-1):
 		for y in range(1,SIZE/newDetails-1):
+			if(!is_instance_valid(self)):return
 			var px = x*newDetails
 			var py = y*newDetails
 			
@@ -75,10 +76,10 @@ func genTerrainInner()->void:
 	terrainMeshInner.material_overlay = StandardMaterial3D.new()
 	terrainMeshInner.material_overlay.vertex_color_use_as_albedo = true
 	terrainMeshInner.mesh = surface_tool.commit()
-	terrainMeshInner.create_trimesh_collision()
 	
 	
 	if(is_instance_valid(self)):
+		terrainMeshInner.call_deferred("create_trimesh_collision")
 		call_deferred("add_child",terrainMeshInner)
 		if(oldterrainMeshInner!=null):oldterrainMeshInner.queue_free()
 
@@ -90,6 +91,7 @@ func genTerrainOuter()->void:
 	
 	for x in range(SIZE/newDetails):
 		for y in range(SIZE/newDetails):
+			if(!is_instance_valid(self)):return
 			if(x == 0 || y == 0 || x == int(SIZE/newDetails)-1 || y == int(SIZE/newDetails)-1):
 				var px = x*newDetails
 				var py = y*newDetails
@@ -100,19 +102,19 @@ func genTerrainOuter()->void:
 					if(px + i.x == 0 && neighbors[0] != null && newDetails < neighbors[0].newDetails):
 						neighborsDifferentDetails[0] = true
 						var nd = neighbors[0].newDetails
-						value = lerp(getMapValue(0,int((py+i.y)/nd)*nd),getMapValue(0,int((py+i.y)/nd+1)*nd),float((py+i.y)%nd)/nd)
+						value = lerp(getMapValue(0,int((py+i.y)/nd)*nd),getMapValue(0,min(int((py+i.y)/nd+1)*nd,SIZE)),float((py+i.y)%nd)/nd)
 					elif(px + i.x == SIZE && neighbors[2] != null && newDetails < neighbors[2].newDetails):
 						neighborsDifferentDetails[2] = true
 						var nd = neighbors[2].newDetails
-						value = lerp(getMapValue(SIZE,int((py+i.y)/nd)*nd),getMapValue(SIZE,int((py+i.y)/nd+1)*nd),float((py+i.y)%nd)/nd)
+						value = lerp(getMapValue(SIZE,int((py+i.y)/nd)*nd),getMapValue(SIZE,min(int((py+i.y)/nd+1)*nd,SIZE)),float((py+i.y)%nd)/nd)
 					elif(py + i.y == 0 && neighbors[3] != null && newDetails < neighbors[3].newDetails):
 						neighborsDifferentDetails[3] = true
 						var nd = neighbors[3].newDetails
-						value = lerp(getMapValue(int((px+i.x)/nd)*nd,0),getMapValue(int((px+i.x)/nd+1)*nd,0),float((px+i.x)%nd)/nd)
+						value = lerp(getMapValue(int((px+i.x)/nd)*nd,0),getMapValue(min(int((px+i.x)/nd+1)*nd,SIZE),0),float((px+i.x)%nd)/nd)
 					elif(py + i.y == SIZE && neighbors[1] != null && newDetails < neighbors[1].newDetails):
 						neighborsDifferentDetails[1] = true
 						var nd = neighbors[1].newDetails
-						value = lerp(getMapValue(int((px+i.x)/nd)*nd,SIZE),getMapValue(int((px+i.x)/nd+1)*nd,SIZE),float((px+i.x)%nd)/nd)
+						value = lerp(getMapValue(int((px+i.x)/nd)*nd,SIZE),getMapValue(min(int((px+i.x)/nd+1)*nd,SIZE),SIZE),float((px+i.x)%nd)/nd)
 					else:
 						value = getMapValue(px+i.x,py+i.y)
 					
@@ -138,9 +140,9 @@ func genTerrainOuter()->void:
 	terrainMeshOuter.material_overlay = StandardMaterial3D.new()
 	terrainMeshOuter.material_overlay.vertex_color_use_as_albedo = true
 	terrainMeshOuter.mesh = surface_tool.commit()
-	terrainMeshOuter.create_trimesh_collision()
 	
 	if(is_instance_valid(self)):
+		terrainMeshOuter.call_deferred("create_trimesh_collision")
 		call_deferred("add_child",terrainMeshOuter)
 		if(oldterrainMeshOuter!=null):oldterrainMeshOuter.queue_free()
 
@@ -151,8 +153,8 @@ func getNeighborDiff()->Array[bool]:
 	if(neighbors[2] != null): rep[2] = newDetails < neighbors[2].newDetails
 	if(neighbors[3] != null): rep[3] = newDetails < neighbors[3].newDetails
 	return rep
-func getMapValue(posX, posY)->float:
-	return baseMap.get_pixel(posX,posY).r + hillMap.get_pixel(posX, posY).r*.1
+func getMapValue(x, y)->float:
+	return baseMap.get_pixel(x,y).r + hillMap.get_pixel(x, y).r*.1
 
 func setPos(x:int,y:int)->void:
 	posX = x*SIZE*SCALE_WIDTH

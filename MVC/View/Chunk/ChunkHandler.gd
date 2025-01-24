@@ -2,15 +2,14 @@ class_name ChunkHandler extends Node
 
 var loadedChunk:Dictionary
 
-var threadGenTerrainLOW:Thread
-var threadGenTerrainNORMAL:Thread
-var threadGenTerrainHIGH:Thread
+var threadGenTerrainLOW:Thread = Thread.new()
+var threadGenTerrainNORMAL:Thread = Thread.new()
+var threadGenTerrainHIGH:Thread = Thread.new()
 
-func genChunkRadius(posX:int,posY:int,radius:int,seed:int):
+func genChunkRadius(posX:int,posY:int,radius:int,s:int):
 	var priorityHIGH:Array[Chunk]
 	var priorityNORMAL:Array[Chunk]
 	var priorityLOW:Array[Chunk]
-	
 	
 	for i in loadedChunk.values():
 		i.unload = true
@@ -19,24 +18,22 @@ func genChunkRadius(posX:int,posY:int,radius:int,seed:int):
 		for y in range(-radius,radius+1):
 			var dist:float = sqrt(pow(x,2)+pow(y,2))
 			if(dist < radius):
+				var chunk:Chunk
 				if loadedChunk.has(Vector2i(x+posX,y+posY)):
-					var chunk:Chunk = loadedChunk.get(Vector2i(x+posX,y+posY))
+					chunk = loadedChunk.get(Vector2i(x+posX,y+posY))
 					chunk.unload = false
 					chunk.calcNewDetails(dist)
-					if(chunk.newDetails == 1):priorityHIGH.append(chunk)
-					elif(chunk.newDetails < 8):priorityNORMAL.append(chunk)
-					else:priorityLOW.append(chunk)
-					
 				else:
-					var chunk:Chunk = Chunk.new()
+					chunk = Chunk.new()
 					chunk.calcNewDetails(dist)
 					chunk.setPos(x+posX,y+posY)
 					chunk.unload = false
 					add_child(chunk,true)
 					loadedChunk[Vector2i(x+posX,y+posY)] = chunk
-					if(chunk.newDetails == 1):priorityHIGH.append(chunk)
-					elif(chunk.newDetails < 8):priorityNORMAL.append(chunk)
-					else:priorityLOW.append(chunk)
+				
+				if(chunk.newDetails == 1):priorityHIGH.append(chunk)
+				elif(chunk.newDetails < 8):priorityNORMAL.append(chunk)
+				else:priorityLOW.append(chunk)
 	
 	for i in loadedChunk.values():
 		if i.unload :
@@ -57,13 +54,14 @@ func genChunkRadius(posX:int,posY:int,radius:int,seed:int):
 	threadGenTerrainNORMAL = Thread.new()
 	threadGenTerrainHIGH = Thread.new()
 	
-	threadGenTerrainHIGH.start(genTerrain.bind(priorityHIGH, seed),Thread.PRIORITY_HIGH)
-	threadGenTerrainNORMAL.start(genTerrain.bind(priorityNORMAL, seed),Thread.PRIORITY_NORMAL)
-	threadGenTerrainLOW.start(genTerrain.bind(priorityLOW, seed),Thread.PRIORITY_LOW)
+	threadGenTerrainHIGH.start(genTerrain.bind(priorityHIGH, s),Thread.PRIORITY_HIGH)
+	threadGenTerrainNORMAL.start(genTerrain.bind(priorityNORMAL, s),Thread.PRIORITY_NORMAL)
+	threadGenTerrainLOW.start(genTerrain.bind(priorityLOW, s),Thread.PRIORITY_LOW)
 
-func genTerrain(list:Array[Chunk], seed)->void:
+func genTerrain(list:Array[Chunk], s)->void:
 	for i in list:
-		i.genTerrain(seed)
+		if(is_instance_valid(i)):
+			i.genTerrain(s)
 
 func getChunkDetailsLevel(x:int,y:int)->int:
 	if(loadedChunk.has(Vector2i(x,y))):return loadedChunk.get(Vector2i(x,y)).newDetails
