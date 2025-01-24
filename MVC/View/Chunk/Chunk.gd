@@ -8,7 +8,7 @@ var noiseGenerator:NoiseGenerator = NoiseGenerator.new()
 var terrainMaterial:StandardMaterial3D = preload("res://MVC/View/Chunk/TerrainMaterial.tres")
 
 const SIZE = 128
-const SCALE_HEIGHT = 512
+const SCALE_HEIGHT = 256
 const SCALE_WIDTH = 2
 
 var grassColor:Color = Color(.2, .6, .2)
@@ -25,15 +25,11 @@ var neighborsDifferentDetails:Array[bool] = [false,false,false,false]
 
 var unload:bool
 
-var baseMap:Image
-var hillMap:Image
-
 func genTerrain(seed:int)->void:
 	if(!is_instance_valid(self)):return
 	
 	noiseGenerator.setSeed(seed)
-	if(baseMap == null):baseMap = noiseGenerator.genBaseMap(posX/SCALE_WIDTH,posY/SCALE_WIDTH, SIZE+1, SIZE+1)
-	if(hillMap == null):hillMap = noiseGenerator.genHillMap(posX/SCALE_WIDTH,posY/SCALE_WIDTH, SIZE+1, SIZE+1)
+	noiseGenerator.setOffset(posX/SCALE_WIDTH,posY/SCALE_WIDTH)
 	
 	if(oldDetails != newDetails):
 		genTerrainInner()
@@ -153,7 +149,12 @@ func getNeighborDiff()->Array[bool]:
 	if(neighbors[3] != null): rep[3] = newDetails < neighbors[3].newDetails
 	return rep
 func getMapValue(x, y)->float:
-	return baseMap.get_pixel(x,y).r #+ hillMap.get_pixel(x, y).r*.04
+	var rep:float = 0
+	noiseGenerator.setBaseMap()
+	rep += noiseGenerator.getPoint(x,y)
+	noiseGenerator.setHillMap()
+	rep += noiseGenerator.getPoint(x,y)
+	return rep+.5
 
 func setPos(x:int,y:int)->void:
 	posX = x*SIZE*SCALE_WIDTH
