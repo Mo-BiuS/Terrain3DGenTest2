@@ -21,6 +21,7 @@ func genBaseMap(posX:int,posY:int,rX:int,rY:int)->Image:
 	noise.fractal_lacunarity = 2.0 #default 2.0
 	noise.fractal_gain = .5 #default 0.5
 	noise.offset = Vector3(posX,posY,0)
+	
 	var img:Image = noise.get_image(rX,rY,false,false,false)
 	return img
 

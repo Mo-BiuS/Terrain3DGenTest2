@@ -5,6 +5,8 @@ var noiseGenerator:NoiseGenerator = NoiseGenerator.new()
 @onready var terrainMeshInner:MeshInstance3D
 @onready var terrainMeshOuter:MeshInstance3D
 
+var terrainMaterial:StandardMaterial3D = preload("res://MVC/View/Chunk/TerrainMaterial.tres")
+
 const SIZE = 128
 const SCALE_HEIGHT = 512
 const SCALE_WIDTH = 2
@@ -54,7 +56,7 @@ func genTerrainInner()->void:
 			for i in [Vector2i(0,0),Vector2i(newDetails,0),Vector2i(newDetails,newDetails),Vector2i(0,newDetails)]:
 				var value:float = getMapValue(px+i.x,py+i.y)
 				
-				if(value < .5):surface_tool.set_color(sandColor)
+				if(value < .51):surface_tool.set_color(sandColor)
 				elif(value < .7):surface_tool.set_color(grassColor)
 				else:surface_tool.set_color(montainColor)
 				surface_tool.add_vertex(Vector3((px+i.x)*SCALE_WIDTH, (value-.5)*SCALE_HEIGHT, (py+i.y)*SCALE_WIDTH));
@@ -73,10 +75,8 @@ func genTerrainInner()->void:
 	var oldterrainMeshInner = terrainMeshInner
 	
 	terrainMeshInner = MeshInstance3D.new()
-	terrainMeshInner.material_overlay = StandardMaterial3D.new()
-	terrainMeshInner.material_overlay.vertex_color_use_as_albedo = true
+	terrainMeshInner.material_overlay = terrainMaterial
 	terrainMeshInner.mesh = surface_tool.commit()
-	
 	
 	if(is_instance_valid(self)):
 		terrainMeshInner.call_deferred("create_trimesh_collision")
@@ -118,7 +118,7 @@ func genTerrainOuter()->void:
 					else:
 						value = getMapValue(px+i.x,py+i.y)
 					
-					if(value < .5):surface_tool.set_color(sandColor)
+					if(value < .51):surface_tool.set_color(sandColor)
 					elif(value < .7):surface_tool.set_color(grassColor)
 					else:surface_tool.set_color(montainColor)
 					surface_tool.add_vertex(Vector3((px+i.x)*SCALE_WIDTH, (value-.5)*SCALE_HEIGHT, (py+i.y)*SCALE_WIDTH));
@@ -137,8 +137,7 @@ func genTerrainOuter()->void:
 	var oldterrainMeshOuter = terrainMeshOuter
 	
 	terrainMeshOuter = MeshInstance3D.new()
-	terrainMeshOuter.material_overlay = StandardMaterial3D.new()
-	terrainMeshOuter.material_overlay.vertex_color_use_as_albedo = true
+	terrainMeshOuter.material_overlay = terrainMaterial
 	terrainMeshOuter.mesh = surface_tool.commit()
 	
 	if(is_instance_valid(self)):
@@ -154,7 +153,7 @@ func getNeighborDiff()->Array[bool]:
 	if(neighbors[3] != null): rep[3] = newDetails < neighbors[3].newDetails
 	return rep
 func getMapValue(x, y)->float:
-	return baseMap.get_pixel(x,y).r #+ hillMap.get_pixel(x, y).r*.1 +.4
+	return baseMap.get_pixel(x,y).r #+ hillMap.get_pixel(x, y).r*.04
 
 func setPos(x:int,y:int)->void:
 	posX = x*SIZE*SCALE_WIDTH

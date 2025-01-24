@@ -2,6 +2,8 @@ class_name ChunkHandler extends Node
 
 var loadedChunk:Dictionary
 
+var chunkPreloaded = preload("res://MVC/View/Chunk/Chunk.tscn")
+
 var threadGenTerrainLOW:Thread = Thread.new()
 var threadGenTerrainNORMAL:Thread = Thread.new()
 var threadGenTerrainHIGH:Thread = Thread.new()
@@ -24,7 +26,7 @@ func genChunkRadius(posX:int,posY:int,radius:int,s:int):
 					chunk.unload = false
 					chunk.calcNewDetails(dist)
 				else:
-					chunk = Chunk.new()
+					chunk = chunkPreloaded.instantiate()
 					chunk.calcNewDetails(dist)
 					chunk.setPos(x+posX,y+posY)
 					chunk.unload = false

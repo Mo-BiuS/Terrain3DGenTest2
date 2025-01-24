@@ -55,7 +55,7 @@ target_position = Vector3(0, 0, 8)
 
 [node name="OmniLight3D" type="OmniLight3D" parent="PlayerHandler/Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 256, 0)
-light_color = Color(1, 0.784314, 0.784314, 1)
+light_color = Color(0.949143, 0.817285, 0.727779, 1)
 light_energy = 16.0
 light_size = 256.0
 shadow_enabled = true
