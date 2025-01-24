@@ -29,15 +29,6 @@ var hillMap:Image
 var genThread:Thread = Thread.new()
 
 func genTerrain(seed:int)->void:
-	if(genThread.is_alive()):
-		return
-	
-	genThread = Thread.new()
-	
-	if newDetails == 1:genThread.start(genTerrainThread.bind(seed),Thread.PRIORITY_HIGH)
-	else:genThread.start(genTerrainThread.bind(seed),Thread.PRIORITY_LOW)
-
-func genTerrainThread(seed:int)->void:
 	noiseGenerator.setSeed(seed)
 	if(baseMap == null):baseMap = noiseGenerator.genBaseMap(posX/SCALE_WIDTH,posY/SCALE_WIDTH, SIZE+1, SIZE+1)
 	if(hillMap == null):hillMap = noiseGenerator.genHillMap(posX/SCALE_WIDTH,posY/SCALE_WIDTH, SIZE+1, SIZE+1)
