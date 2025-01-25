@@ -138,5 +138,5 @@ size = Vector2(256, 256)
 [node name="Chunk" type="Node3D"]
 script = ExtResource("1_ejyv7")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="WaterMesh" type="MeshInstance3D" parent="."]
 mesh = SubResource("PlaneMesh_ktwg0")

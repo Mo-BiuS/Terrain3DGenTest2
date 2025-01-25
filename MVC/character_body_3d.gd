@@ -1,6 +1,5 @@
 extends CharacterBody3D
 
-
 const SPEED = 24 #Normal 24
 const JUMP_VELOCITY = 32
 
@@ -13,6 +12,7 @@ var gravity: float = 64
 @onready var neck:Node3D = $Neck
 @onready var camera:Camera3D = $Neck/Camera3d
 @onready var cameraRayCast:RayCast3D = $Neck/RayCast3D
+@onready var meshList:Node3D = $MeshList
 
 func _process(delta: float) -> void:
 	cameraRayCast.force_raycast_update()
@@ -47,7 +47,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
-
+	
 	move_and_slide()
 	
 	var nPos:Vector3 = position/(Chunk.SIZE*Chunk.SCALE_WIDTH)

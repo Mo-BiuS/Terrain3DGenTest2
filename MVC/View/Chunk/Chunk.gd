@@ -4,6 +4,7 @@ var noiseGenerator:NoiseGenerator = NoiseGenerator.new()
 
 @onready var terrainMeshInner:MeshInstance3D
 @onready var terrainMeshOuter:MeshInstance3D
+@onready var waterMesh:MeshInstance3D = $WaterMesh
 
 var terrainMaterial:StandardMaterial3D = preload("res://MVC/View/Chunk/TerrainMaterial.tres")
 
@@ -25,16 +26,22 @@ var neighborsDifferentDetails:Array[bool] = [false,false,false,false]
 
 var unload:bool
 
+var needToShowWater = false
+
 func init(seed)->void:
 	noiseGenerator.init(seed,posX/SCALE_WIDTH,posY/SCALE_WIDTH)
 
 func genTerrain()->void:
+	needToShowWater = true
 	if(oldDetails != newDetails):
 		genTerrainInner()
 		genTerrainOuter()
 	elif(neighborsDifferentDetails != getNeighborDiff()):
 		genTerrainOuter()
 	oldDetails = newDetails
+	
+	if needToShowWater:waterMesh.call_deferred("show")
+	else:waterMesh.call_deferred("hide")
 
 func genTerrainInner()->void:
 	var surface_tool = SurfaceTool.new();
@@ -48,6 +55,8 @@ func genTerrainInner()->void:
 			
 			for i in [Vector2i(0,0),Vector2i(newDetails,0),Vector2i(newDetails,newDetails),Vector2i(0,newDetails)]:
 				var value:float = getMapValue(px+i.x,py+i.y)
+				
+				if(!needToShowWater && value <= .5):needToShowWater = true
 				
 				if(value < .51):surface_tool.set_color(sandColor)
 				else:surface_tool.set_color(grassColor)
@@ -107,6 +116,8 @@ func genTerrainOuter()->void:
 						value = lerp(getMapValue(int((px+i.x)/nd)*nd,SIZE),getMapValue(min(int((px+i.x)/nd+1)*nd,SIZE),SIZE),float((px+i.x)%nd)/nd)
 					else:
 						value = getMapValue(px+i.x,py+i.y)
+					
+					if(!needToShowWater && value <= .5):needToShowWater = true
 					
 					if(value < .51):surface_tool.set_color(sandColor)
 					else:surface_tool.set_color(grassColor)

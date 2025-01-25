@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://2cr8pxiw45lg"]
+[gd_scene load_steps=12 format=3 uid="uid://2cr8pxiw45lg"]
 
 [ext_resource type="Script" path="res://MVC/Control/Game/Game.gd" id="1_7wh2w"]
 [ext_resource type="Script" path="res://MVC/MapHandler.gd" id="2_iahu4"]
@@ -9,6 +9,9 @@
 [ext_resource type="Script" path="res://MVC/View/Game/GameUI.gd" id="8_4p0gx"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_csh4g"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_wi5j7"]
+size = Vector3(0.5, 0.5, 0.5)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pv6x0"]
 
@@ -37,8 +40,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 128, 0)
 collision_layer = 2
 script = ExtResource("4_6qdp4")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerHandler/Player"]
+[node name="MeshList" type="Node3D" parent="PlayerHandler/Player"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerHandler/Player/MeshList"]
 mesh = SubResource("CapsuleMesh_csh4g")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="PlayerHandler/Player/MeshList"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -0.3)
+mesh = SubResource("BoxMesh_wi5j7")
+skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerHandler/Player"]
 shape = SubResource("CapsuleShape3D_pv6x0")
