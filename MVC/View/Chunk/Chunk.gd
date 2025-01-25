@@ -26,8 +26,7 @@ var neighborsDifferentDetails:Array[bool] = [false,false,false,false]
 var unload:bool
 
 func init(seed)->void:
-	noiseGenerator.setSeed(seed)
-	noiseGenerator.setOffset(posX/SCALE_WIDTH,posY/SCALE_WIDTH)
+	noiseGenerator.init(seed,posX/SCALE_WIDTH,posY/SCALE_WIDTH)
 
 func genTerrain()->void:
 	if(oldDetails != newDetails):
