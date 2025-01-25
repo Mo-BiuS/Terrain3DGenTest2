@@ -30,8 +30,6 @@ func init(seed)->void:
 	noiseGenerator.setOffset(posX/SCALE_WIDTH,posY/SCALE_WIDTH)
 
 func genTerrain()->void:
-	if(!is_instance_valid(self)):return
-	
 	if(oldDetails != newDetails):
 		genTerrainInner()
 		genTerrainOuter()
@@ -46,7 +44,6 @@ func genTerrainInner()->void:
 	
 	for x in range(1,SIZE/newDetails-1):
 		for y in range(1,SIZE/newDetails-1):
-			if(!is_instance_valid(self)):return
 			var px = x*newDetails
 			var py = y*newDetails
 			
@@ -74,10 +71,9 @@ func genTerrainInner()->void:
 	terrainMeshInner.material_overlay = terrainMaterial
 	terrainMeshInner.mesh = surface_tool.commit()
 	
-	if(is_instance_valid(self)):
-		terrainMeshInner.call_deferred("create_trimesh_collision")
-		call_deferred("add_child",terrainMeshInner)
-		if(oldterrainMeshInner!=null):oldterrainMeshInner.queue_free()
+	terrainMeshInner.call_deferred("create_trimesh_collision")
+	call_deferred("add_child",terrainMeshInner)
+	if(oldterrainMeshInner!=null):oldterrainMeshInner.queue_free()
 
 func genTerrainOuter()->void:
 	neighborsDifferentDetails = [false,false,false,false]
@@ -87,7 +83,6 @@ func genTerrainOuter()->void:
 	
 	for x in range(SIZE/newDetails):
 		for y in range(SIZE/newDetails):
-			if(!is_instance_valid(self)):return
 			if(x == 0 || y == 0 || x == int(SIZE/newDetails)-1 || y == int(SIZE/newDetails)-1):
 				var px = x*newDetails
 				var py = y*newDetails
@@ -135,10 +130,9 @@ func genTerrainOuter()->void:
 	terrainMeshOuter.material_overlay = terrainMaterial
 	terrainMeshOuter.mesh = surface_tool.commit()
 	
-	if(is_instance_valid(self)):
-		terrainMeshOuter.call_deferred("create_trimesh_collision")
-		call_deferred("add_child",terrainMeshOuter)
-		if(oldterrainMeshOuter!=null):oldterrainMeshOuter.queue_free()
+	terrainMeshOuter.call_deferred("create_trimesh_collision")
+	call_deferred("add_child",terrainMeshOuter)
+	if(oldterrainMeshOuter!=null):oldterrainMeshOuter.queue_free()
 
 func getNeighborDiff()->Array[bool]:
 	var rep:Array[bool] = [false,false,false,false]
@@ -161,3 +155,8 @@ func calcNewDetails(dist:float):
 	if dist <= 1.5: newDetails = 1
 	elif dist <= 3: newDetails = 4
 	else: newDetails = 32
+func deref():
+	for i in 4:
+		if neighbors[i] != null:
+			neighbors[i].neighbors[(i+2)%4] = null
+			neighbors[i] = null

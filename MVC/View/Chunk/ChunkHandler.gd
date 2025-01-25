@@ -42,7 +42,7 @@ func genChunkRadius(posX:int,posY:int,radius:int,s:int):
 		if i.unload :
 			remove_child(i)
 			loadedChunk.erase(i.getPosition())
-			i.queue_free()
+			i.deref()
 	
 	for x in range(-radius,radius+1):
 		for y in range(-radius,radius+1):

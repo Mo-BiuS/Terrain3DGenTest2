@@ -1,7 +1,7 @@
 extends CharacterBody3D
 
 
-const SPEED = 24 #Normal 24
+const SPEED = 200 #Normal 24
 const JUMP_VELOCITY = 32
 
 var cPos:Vector3i
@@ -30,15 +30,14 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event is InputEventMouseMotion:
 			neck.rotation.y = neck.rotation.y - event.relative.x * 0.01
 			neck.rotation.x = neck.rotation.x - event.relative.y * 0.005
-			#neck.rotation.z = 0
 			neck.rotation.x = clamp(neck.rotation.x, deg_to_rad(-60), deg_to_rad(30))
 
 
 func _physics_process(delta: float) -> void:
-	if not is_on_floor():
-		velocity.y -= gravity * delta
-	if Input.is_action_pressed("space") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
+	#if not is_on_floor():
+	#	velocity.y -= gravity * delta
+	#if Input.is_action_pressed("space") and is_on_floor():
+	#	velocity.y = JUMP_VELOCITY
 		
 	var input_dir := Input.get_vector("left", "right", "forward", "back")
 	var direction = (neck.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
