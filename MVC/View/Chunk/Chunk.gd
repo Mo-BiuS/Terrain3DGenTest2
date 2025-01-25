@@ -25,11 +25,12 @@ var neighborsDifferentDetails:Array[bool] = [false,false,false,false]
 
 var unload:bool
 
-func genTerrain(seed:int)->void:
-	if(!is_instance_valid(self)):return
-	
+func init(seed)->void:
 	noiseGenerator.setSeed(seed)
 	noiseGenerator.setOffset(posX/SCALE_WIDTH,posY/SCALE_WIDTH)
+
+func genTerrain()->void:
+	if(!is_instance_valid(self)):return
 	
 	if(oldDetails != newDetails):
 		genTerrainInner()
@@ -53,8 +54,7 @@ func genTerrainInner()->void:
 				var value:float = getMapValue(px+i.x,py+i.y)
 				
 				if(value < .51):surface_tool.set_color(sandColor)
-				elif(value < .7):surface_tool.set_color(grassColor)
-				else:surface_tool.set_color(montainColor)
+				else:surface_tool.set_color(grassColor)
 				surface_tool.add_vertex(Vector3((px+i.x)*SCALE_WIDTH, (value-.5)*SCALE_HEIGHT, (py+i.y)*SCALE_WIDTH));
 			
 			surface_tool.add_index(v);
@@ -115,8 +115,7 @@ func genTerrainOuter()->void:
 						value = getMapValue(px+i.x,py+i.y)
 					
 					if(value < .51):surface_tool.set_color(sandColor)
-					elif(value < .7):surface_tool.set_color(grassColor)
-					else:surface_tool.set_color(montainColor)
+					else:surface_tool.set_color(grassColor)
 					surface_tool.add_vertex(Vector3((px+i.x)*SCALE_WIDTH, (value-.5)*SCALE_HEIGHT, (py+i.y)*SCALE_WIDTH));
 				
 				surface_tool.add_index(v);
@@ -143,18 +142,14 @@ func genTerrainOuter()->void:
 
 func getNeighborDiff()->Array[bool]:
 	var rep:Array[bool] = [false,false,false,false]
+	if(!is_instance_valid(self)):return rep
 	if(neighbors[0] != null): rep[0] = newDetails < neighbors[0].newDetails
 	if(neighbors[1] != null): rep[1] = newDetails < neighbors[1].newDetails
 	if(neighbors[2] != null): rep[2] = newDetails < neighbors[2].newDetails
 	if(neighbors[3] != null): rep[3] = newDetails < neighbors[3].newDetails
 	return rep
 func getMapValue(x, y)->float:
-	var rep:float = 0
-	noiseGenerator.setBaseMap()
-	rep += noiseGenerator.getPoint(x,y)
-	noiseGenerator.setHillMap()
-	rep += noiseGenerator.getPoint(x,y)
-	return rep+.5
+	return noiseGenerator.getPoint(x,y)+.5
 
 func setPos(x:int,y:int)->void:
 	posX = x*SIZE*SCALE_WIDTH
