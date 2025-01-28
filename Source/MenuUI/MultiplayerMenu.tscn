@@ -1,0 +1,46 @@
+[gd_scene load_steps=3 format=3 uid="uid://gtvffnkx5nci"]
+
+[ext_resource type="FontFile" uid="uid://d0aw4bklyegh8" path="res://Ressources/Font/FSEX300.ttf" id="1_0k05n"]
+[ext_resource type="Script" path="res://Source/MenuUI/MultiplayerMenu.gd" id="1_ig2mv"]
+
+[node name="MultiplayerMenu" type="PanelContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -72.0
+offset_top = -36.0
+offset_right = 72.0
+offset_bottom = 36.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ig2mv")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="SelectMenu" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="HostButton" type="Button" parent="MarginContainer/SelectMenu"]
+custom_minimum_size = Vector2(192, 64)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_0k05n")
+theme_override_font_sizes/font_size = 32
+text = "Host"
+
+[node name="JoinButton" type="Button" parent="MarginContainer/SelectMenu"]
+custom_minimum_size = Vector2(192, 64)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_0k05n")
+theme_override_font_sizes/font_size = 32
+text = "Join"
+
+[connection signal="pressed" from="MarginContainer/SelectMenu/HostButton" to="." method="_on_host_button_pressed"]
+[connection signal="pressed" from="MarginContainer/SelectMenu/JoinButton" to="." method="_on_join_button_pressed"]
