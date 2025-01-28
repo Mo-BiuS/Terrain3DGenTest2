@@ -92,12 +92,13 @@ custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_chire")
 theme_override_font_sizes/font_size = 32
+disabled = true
 text = "Host"
 
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="GoBackButton" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="ToMultiplayerMenuButton" type="Button" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_chire")
@@ -106,4 +107,4 @@ text = "Return"
 
 [connection signal="text_changed" from="MarginContainer/VBoxContainer/GridContainer/PseudoLine" to="." method="_on_pseudo_line_text_changed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/GoBackButton" to="." method="_on_go_back_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ToMultiplayerMenuButton" to="." method="_on_to_multiplayer_menu_button_pressed"]

@@ -1,25 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://bblfkbm1wa1mo"]
+[gd_scene load_steps=2 format=3 uid="uid://bblfkbm1wa1mo"]
 
-[ext_resource type="PackedScene" uid="uid://gtvffnkx5nci" path="res://Source/MenuUI/MultiplayerMenu.tscn" id="1_25vbi"]
 [ext_resource type="Script" path="res://Source/MenuUI/MenuUI.gd" id="1_kpfep"]
-[ext_resource type="PackedScene" uid="uid://ltasiqwkkfa8" path="res://Source/MenuUI/HostMenu.tscn" id="3_th5ik"]
-[ext_resource type="PackedScene" uid="uid://dssoxi6pfg7rs" path="res://Source/MenuUI/JoinMenu.tscn" id="5_v4hj6"]
 
 [node name="MenuUI" type="CanvasLayer"]
 script = ExtResource("1_kpfep")
-
-[node name="MultiplayerMenu" parent="." instance=ExtResource("1_25vbi")]
-visible = false
-
-[node name="HostMenu" parent="." instance=ExtResource("3_th5ik")]
-visible = false
-
-[node name="JoinMenu" parent="." instance=ExtResource("5_v4hj6")]
-visible = false
-
-[connection signal="host" from="MultiplayerMenu" to="." method="_on_multiplayer_menu_host"]
-[connection signal="join" from="MultiplayerMenu" to="." method="_on_multiplayer_menu_join"]
-[connection signal="goBack" from="HostMenu" to="." method="_on_host_menu_go_back"]
-[connection signal="host" from="HostMenu" to="." method="_on_host_menu_host"]
-[connection signal="goBack" from="JoinMenu" to="." method="_on_join_menu_go_back"]
-[connection signal="join" from="JoinMenu" to="." method="_on_join_menu_join"]

@@ -1,37 +1,46 @@
 class_name MenuUI extends CanvasLayer
 
-@onready var multiplayerMenu:MultiplayerMenu=$MultiplayerMenu
-@onready var hostMenu:HostMenu=$HostMenu
-@onready var joinMenu:JoinMenu=$JoinMenu
+var multiplayerMenuPacked:PackedScene=preload("res://Source/MenuUI/MultiplayerMenu.tscn")
+var hostMenuPacked:PackedScene=preload("res://Source/MenuUI/HostMenu.tscn")
+var joinMenuPacked:PackedScene=preload("res://Source/MenuUI/JoinMenu.tscn")
 
 signal host(pseudo:String, password:String, seed:int, upnp:bool)
 signal join(pseudo:String, password:String, ipAdress:String)
 
 func _ready() -> void:
-	for i in get_children():i.hide()
-	multiplayerMenu.show()
+	loadMultiplayerMenu()
 
 ############[MultiplayerMenu]############
-func _on_multiplayer_menu_host() -> void:
-	multiplayerMenu.hide()
-	hostMenu.init()
-	hostMenu.show()
-func _on_multiplayer_menu_join() -> void:
-	multiplayerMenu.hide()
-	joinMenu.show()
-	joinMenu.init()
+func loadMultiplayerMenu() -> void:
+	var multiplayerMenu:MultiplayerMenu = multiplayerMenuPacked.instantiate()
+	multiplayerMenu.host.connect(toHostMenu)
+	multiplayerMenu.join.connect(toJoinMenu)
+	add_child(multiplayerMenu)
+func toHostMenu() -> void:
+	for i in get_children():i.queue_free()
+	loadHostMenu()
+func toJoinMenu() -> void:
+	for i in get_children():i.queue_free()
+	loadJoinMenu()
+func toMultiplayerMenu() -> void:
+	for i in get_children():i.queue_free()
+	loadMultiplayerMenu()
 
-func _on_host_menu_host(pseudo: String, password: String, seed: int, upnp: bool) -> void:
-	hostMenu.hide()
+############[hostMenu]############
+func loadHostMenu() -> void:
+	var hostMenu:HostMenu = hostMenuPacked.instantiate()
+	hostMenu.toMultiplayerMenu.connect(toMultiplayerMenu)
+	hostMenu.host.connect(menuHost)
+	add_child(hostMenu)
+func menuHost(pseudo:String, password:String, seed:int, upnp:bool):
+	for i in get_children():i.queue_free()
 	host.emit(pseudo, password, seed, upnp)
-func _on_host_menu_go_back() -> void:
-	hostMenu.hide()
-	multiplayerMenu.show()
-
-
-func _on_join_menu_join(pseudo: String, password: String, ipAdress: String) -> void:
-	joinMenu.hide()
+############[joinMenu]############
+func loadJoinMenu() -> void:
+	var joinMenu:JoinMenu = joinMenuPacked.instantiate()
+	joinMenu.toMultiplayerMenu.connect(toMultiplayerMenu)
+	joinMenu.join.connect(menuJoin)
+	add_child(joinMenu)
+func menuJoin(pseudo:String, password:String, ipAdress:String) -> void:
+	for i in get_children():i.queue_free()
 	join.emit(pseudo, password, ipAdress)
-func _on_join_menu_go_back() -> void:
-	joinMenu.hide()
-	multiplayerMenu.show()

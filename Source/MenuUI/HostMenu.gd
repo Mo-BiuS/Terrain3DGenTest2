@@ -8,14 +8,8 @@ class_name HostMenu extends PanelContainer
 @onready var hostButton:Button = $MarginContainer/VBoxContainer/HostButton
 
 signal host(pseudo:String, password:String, seed:int, upnp:bool)
-signal goBack()
+signal toMultiplayerMenu()
 
-func init():
-	pseudoLine.clear()
-	passwordLine.clear()
-	seedLine.clear()
-	upnpCheck.button_pressed = false
-	hostButton.disabled = true
 
 func validateHost()-> void:
 	hostButton.disabled = !(!pseudoLine.text.is_empty())
@@ -24,5 +18,5 @@ func _on_pseudo_line_text_changed(new_text: String) -> void:
 
 func _on_host_button_pressed() -> void:
 	host.emit(pseudoLine.text, passwordLine.text, seedLine.text.to_int(), upnpCheck.button_pressed)
-func _on_go_back_button_pressed() -> void:
-	goBack.emit()
+func _on_to_multiplayer_menu_button_pressed() -> void:
+	toMultiplayerMenu.emit()
