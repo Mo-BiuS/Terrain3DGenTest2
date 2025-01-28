@@ -3,6 +3,7 @@ class_name MenuUI extends CanvasLayer
 var multiplayerMenuPacked:PackedScene=preload("res://Source/MenuUI/MultiplayerMenu.tscn")
 var hostMenuPacked:PackedScene=preload("res://Source/MenuUI/HostMenu.tscn")
 var joinMenuPacked:PackedScene=preload("res://Source/MenuUI/JoinMenu.tscn")
+var loadingScreenMenu:PackedScene=preload("res://Source/MenuUI/LoadingScreenMenu.tscn")
 
 signal host(pseudo:String, password:String, seed:int, upnp:bool)
 signal join(pseudo:String, password:String, ipAdress:String)
@@ -34,6 +35,7 @@ func loadHostMenu() -> void:
 	add_child(hostMenu)
 func menuHost(pseudo:String, password:String, seed:int, upnp:bool):
 	for i in get_children():i.queue_free()
+	loadLoadingScreenMenu()
 	host.emit(pseudo, password, seed, upnp)
 ############[joinMenu]############
 func loadJoinMenu() -> void:
@@ -43,4 +45,10 @@ func loadJoinMenu() -> void:
 	add_child(joinMenu)
 func menuJoin(pseudo:String, password:String, ipAdress:String) -> void:
 	for i in get_children():i.queue_free()
+	loadLoadingScreenMenu()
 	join.emit(pseudo, password, ipAdress)
+
+############[loadingScreenMenu]############
+func loadLoadingScreenMenu()->void:
+	var loadingScreenMenu:LoadingScreenMenu = loadingScreenMenu.instantiate()
+	add_child(loadingScreenMenu)
