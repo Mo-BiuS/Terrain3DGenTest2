@@ -1,12 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://2cr8pxiw45lg"]
+[gd_scene load_steps=7 format=3 uid="uid://2cr8pxiw45lg"]
 
 [ext_resource type="Script" path="res://Source/Game/Game.gd" id="1_7wh2w"]
 [ext_resource type="Script" path="res://Source/Game/Map/MapHandler.gd" id="2_iahu4"]
 [ext_resource type="Script" path="res://Source/Game/Map/Chunk/ChunkHandler.gd" id="3_rav8a"]
 [ext_resource type="Script" path="res://Source/Game/Player/PlayerHandler.gd" id="4_sx16o"]
-[ext_resource type="PackedScene" uid="uid://df43ms8oxtrs0" path="res://Source/Game/Player/Player.tscn" id="5_1r2nd"]
 [ext_resource type="PackedScene" uid="uid://crrqcc6236i3u" path="res://Source/Game/UI/GameUI.tscn" id="7_epbpw"]
-[ext_resource type="Script" path="res://Source/Game/UI/GameUI.gd" id="8_4p0gx"]
 
 [sub_resource type="Environment" id="Environment_1ldod"]
 reflected_light_source = 2
@@ -16,7 +14,7 @@ ssao_intensity = 4.0
 fog_enabled = true
 fog_density = 0.0016
 
-[node name="Game" type="Node"]
+[node name="Game" type="Node3D"]
 script = ExtResource("1_7wh2w")
 
 [node name="MapHandler" type="Node" parent="."]
@@ -28,10 +26,12 @@ script = ExtResource("3_rav8a")
 [node name="PlayerHandler" type="Node" parent="."]
 script = ExtResource("4_sx16o")
 
-[node name="Player" parent="PlayerHandler" instance=ExtResource("5_1r2nd")]
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="PlayerHandler"]
+_spawnable_scenes = PackedStringArray("res://Source/Game/Player/Player.tscn")
+spawn_path = NodePath("..")
 
 [node name="GameUI" parent="." instance=ExtResource("7_epbpw")]
-script = ExtResource("8_4p0gx")
+visible = false
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_1ldod")

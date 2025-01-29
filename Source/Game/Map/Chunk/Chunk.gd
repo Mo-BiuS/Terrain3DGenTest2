@@ -25,6 +25,7 @@ var neighbors:Array[Chunk] = [null,null,null,null]
 var neighborsDifferentDetails:Array[bool] = [false,false,false,false]
 
 var unload:bool
+var loaded:bool
 
 var needToShowWater = false
 
@@ -42,6 +43,8 @@ func genTerrain()->void:
 	
 	if needToShowWater:waterMesh.call_deferred("show")
 	else:waterMesh.call_deferred("hide")
+	
+	loaded = true
 
 func genTerrainInner()->void:
 	var surface_tool = SurfaceTool.new();

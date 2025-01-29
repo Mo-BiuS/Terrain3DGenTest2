@@ -8,6 +8,12 @@ var threadGenTerrainLOW:Thread = Thread.new()
 var threadGenTerrainNORMAL:Thread = Thread.new()
 var threadGenTerrainHIGH:Thread = Thread.new()
 
+func isAllChunkLoaded()->bool:
+	for i in loadedChunk.values():
+		if i.loaded == false:
+			return false
+	return true
+
 func genChunkRadius(posX:int,posY:int,radius:int,s:int):
 	var priorityHIGH:Array[Chunk]
 	var priorityNORMAL:Array[Chunk]
@@ -24,6 +30,7 @@ func genChunkRadius(posX:int,posY:int,radius:int,s:int):
 				if loadedChunk.has(Vector2i(x+posX,y+posY)):
 					chunk = loadedChunk.get(Vector2i(x+posX,y+posY))
 					chunk.unload = false
+					chunk.loaded = false
 					chunk.calcNewDetails(dist)
 				else:
 					chunk = chunkPreloaded.instantiate()
@@ -31,6 +38,7 @@ func genChunkRadius(posX:int,posY:int,radius:int,s:int):
 					chunk.setPos(x+posX,y+posY)
 					chunk.init(s)
 					chunk.unload = false
+					chunk.loaded = false
 					add_child(chunk,true)
 					loadedChunk[Vector2i(x+posX,y+posY)] = chunk
 				

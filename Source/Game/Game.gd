@@ -1,18 +1,13 @@
-class_name Game extends Node
+class_name Game extends Node3D
 
 @onready var mapHandler:MapHandler = $MapHandler
 @onready var playerHandler:PlayerHandler = $PlayerHandler
 @onready var gui:GameUI = $GameUI
-@onready var player = $PlayerHandler/Player
 
-var seed:int
+var seed:int = G_DATA.seed
 
-func _ready() -> void:
-	mapHandler.changedChunk(0,0)
-
-func _process(_delta: float) -> void:
-	gui.setPlayerPos(player.position.x,player.position.y,player.position.z)
-
+func isGameLoaded()->bool:
+	return mapHandler.isMapLoaded()
 func changedChunk(x:int, y:int):
 	gui.setChunkPos(x,y,mapHandler.getChunkDetailsLevel(x,y))
 	mapHandler.changedChunk(x,y)
