@@ -15,6 +15,7 @@ const STATE_ERROR_UPNP = 2
 const STATE_ERROR_CONNECTION_FAILED = 3
 
 signal disconnectedFromServer
+signal playerConnected(id:int)
 
 func _ready() -> void:
 	multiplayer.peer_connected.connect(peerConnected)
@@ -85,13 +86,15 @@ func join()->void:
 func sendServerData(pseudo:String, password:String, id:int)->void:
 	if(G_DATA.password == password):
 		if(!G_DATA.playerNameDico.values().has(pseudo)):
+			confirmConnection.rpc_id(id, G_DATA.seed)
 			G_DATA.playerNameDico[id] = pseudo
-			confirmConnection.rpc_id(id)
+			playerConnected.emit(id)
 		else:
 			multiplayer.disconnect_peer(id)
 	else:
 		multiplayer.disconnect_peer(id)
 
 @rpc("any_peer")
-func confirmConnection()->void:
+func confirmConnection(seed:int)->void:
+	G_DATA.seed = seed
 	state = STATE_DONE

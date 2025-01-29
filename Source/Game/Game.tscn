@@ -35,3 +35,5 @@ visible = false
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_1ldod")
+
+[connection signal="spawned" from="PlayerHandler/PlayerSpawner" to="." method="_on_player_spawner_spawned"]

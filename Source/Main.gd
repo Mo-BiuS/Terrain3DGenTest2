@@ -5,8 +5,8 @@ var gamePacked:PackedScene = preload("res://Source/Game/Game.tscn")
 
 @onready var networkInit:NetworkInit = $NetworkInit
 
-var menuUI:MenuUI
-var game:Game
+@onready var menuUI:MenuUI = $MenuUI
+@onready var game:Game = $Game
 
 var state
 const STATE_MENU_IDLE = 0
@@ -15,9 +15,11 @@ const STATE_GAME_LOADING = 2
 const STATE_GAME_IDLE = 100
 
 func _ready() -> void:
-	loadMenuUI()
+	menuUI.host.connect(host)
+	menuUI.join.connect(join)
 	networkInit.menuUI = menuUI
 	state = STATE_MENU_IDLE
+	game.hide()
 
 func _process(delta: float) -> void:
 	match state:
@@ -26,6 +28,7 @@ func _process(delta: float) -> void:
 				networkInit.STATE_DONE:
 					menuUI.setLoadingScreenText("Loading game")
 					state = STATE_GAME_LOADING
+					if(multiplayer.is_server()):game.addServerPlayer()
 				networkInit.STATE_ERROR_UPNP:
 					menuUI.loadNetworkFailMenu()
 					menuUI.setNetworkFailText("Error UPNP : failed to initialize")
@@ -34,12 +37,13 @@ func _process(delta: float) -> void:
 					menuUI.loadNetworkFailMenu()
 					menuUI.setNetworkFailText("Error connection failed")
 					state = STATE_MENU_IDLE
+					game.hide()
+		STATE_GAME_LOADING:
+			if(game.isGameLoaded()):
+				menuUI.unloadMenu()
+				game.show()
+				state = STATE_GAME_IDLE
 
-func loadMenuUI():
-	menuUI = menuUIPacked.instantiate()
-	menuUI.host.connect(host)
-	menuUI.join.connect(join)
-	add_child(menuUI)
 
 func host(pseudo: String, password: String, seed: int, upnp: bool) -> void:
 	G_DATA.clear()
@@ -66,3 +70,5 @@ func _on_network_init_disconnected_from_server() -> void:
 	menuUI.loadNetworkFailMenu()
 	menuUI.setNetworkFailText("Disconnected from server")
 	state = STATE_MENU_IDLE
+func _on_network_init_player_connected(id: int) -> void:
+	game.addPlayer(id)

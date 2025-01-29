@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://df43ms8oxtrs0"]
+[gd_scene load_steps=6 format=3 uid="uid://df43ms8oxtrs0"]
 
 [ext_resource type="Script" path="res://Source/Game/Player/Player.gd" id="1_ao6qk"]
 
@@ -8,6 +8,11 @@
 size = Vector3(0.5, 0.5, 0.5)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pv6x0"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_myytl"]
+properties/0/path = NodePath(".:id")
+properties/0/spawn = true
+properties/0/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 128, 0)
@@ -46,3 +51,6 @@ light_energy = 16.0
 light_size = 256.0
 shadow_enabled = true
 omni_range = 1024.0
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_myytl")

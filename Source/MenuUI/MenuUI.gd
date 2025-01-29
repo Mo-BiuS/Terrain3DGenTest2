@@ -12,6 +12,9 @@ signal join(pseudo:String, password:String, ipAdress:String)
 func _ready() -> void:
 	loadMultiplayerMenu()
 
+func unloadMenu()->void:
+	for i in get_children():i.queue_free()
+
 ############[MultiplayerMenu]############
 func loadMultiplayerMenu() -> void:
 	for i in get_children():i.queue_free()
