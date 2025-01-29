@@ -74,6 +74,7 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(394, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
+text = "127.0.0.1"
 
 [node name="JoinButton" type="Button" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 64)

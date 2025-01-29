@@ -4,7 +4,7 @@ var multiplayerMenuPacked:PackedScene=preload("res://Source/MenuUI/MultiplayerMe
 var hostMenuPacked:PackedScene=preload("res://Source/MenuUI/HostMenu.tscn")
 var joinMenuPacked:PackedScene=preload("res://Source/MenuUI/JoinMenu.tscn")
 var loadingScreenMenuPacked:PackedScene=preload("res://Source/MenuUI/LoadingScreenMenu.tscn")
-var upnpFailedMenuPacked:PackedScene=preload("res://Source/MenuUI/UpnpFailedMenu.tscn")
+var upnpFailedMenuPacked:PackedScene=preload("res://Source/MenuUI/NetworkFailedMenu.tscn")
 
 signal host(pseudo:String, password:String, seed:int, upnp:bool)
 signal join(pseudo:String, password:String, ipAdress:String)
@@ -57,8 +57,11 @@ func setLoadingScreenText(text:String)->void:
 		if i is LoadingScreenMenu:i.setText(text)
 
 ############[upnpFailedMenu]############
-func loadUpnpFailedMenu()->void:
+func loadNetworkFailMenu()->void:
 	for i in get_children():i.queue_free()
-	var upnpFailedMenu:UpnpFailedMenu = upnpFailedMenuPacked.instantiate()
+	var upnpFailedMenu:NetworkFailedMenu = upnpFailedMenuPacked.instantiate()
 	upnpFailedMenu.returnToMenu.connect(loadMultiplayerMenu)
 	add_child(upnpFailedMenu)
+func setNetworkFailText(text:String)->void:
+	for i in get_children():
+		if i is NetworkFailedMenu:i.setText(text)

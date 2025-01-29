@@ -1,9 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://bblfkbm1wa1mo"]
+[gd_scene load_steps=2 format=3 uid="uid://bblfkbm1wa1mo"]
 
 [ext_resource type="Script" path="res://Source/MenuUI/MenuUI.gd" id="1_kpfep"]
-[ext_resource type="PackedScene" uid="uid://d5eqllsos1px" path="res://Source/MenuUI/UpnpFailedMenu.tscn" id="2_otgm2"]
 
 [node name="MenuUI" type="CanvasLayer"]
 script = ExtResource("1_kpfep")
-
-[node name="UpnpFailedMenu" parent="." instance=ExtResource("2_otgm2")]

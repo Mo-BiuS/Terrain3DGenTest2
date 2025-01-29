@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bo156drrsfqft"]
+
+[ext_resource type="Script" path="res://Source/NetworkScripts/NetworkInit.gd" id="1_librk"]
+
+[node name="NetworkInit" type="Node"]
+script = ExtResource("1_librk")

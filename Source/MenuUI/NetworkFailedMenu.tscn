@@ -1,9 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://d5eqllsos1px"]
 
 [ext_resource type="FontFile" uid="uid://d0aw4bklyegh8" path="res://Ressources/Font/FSEX300.ttf" id="1_4ak1u"]
-[ext_resource type="Script" path="res://Source/MenuUI/UpnpFailedMenu.gd" id="1_5cfep"]
+[ext_resource type="Script" path="res://Source/MenuUI/NetworkFailedMenu.gd" id="1_5cfep"]
 
-[node name="UpnpFailedMenu" type="PanelContainer"]
+[node name="NetworkFailedMenu" type="PanelContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -29,7 +29,7 @@ theme_override_constants/margin_bottom = 8
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="FailedMessage" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_4ak1u")
 theme_override_font_sizes/font_size = 32

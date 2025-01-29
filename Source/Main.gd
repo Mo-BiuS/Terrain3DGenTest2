@@ -3,8 +3,7 @@ class_name Main extends Node
 var menuUIPacked:PackedScene = preload("res://Source/MenuUI/MenuUI.tscn")
 var gamePacked:PackedScene = preload("res://Source/Game/Game.tscn")
 
-var networkInit:NetworkInit
-var networkInitThread:Thread
+@onready var networkInit:NetworkInit = $NetworkInit
 
 var menuUI:MenuUI
 var game:Game
@@ -17,6 +16,7 @@ const STATE_GAME_IDLE = 100
 
 func _ready() -> void:
 	loadMenuUI()
+	networkInit.menuUI = menuUI
 	state = STATE_MENU_IDLE
 
 func _process(delta: float) -> void:
@@ -24,13 +24,15 @@ func _process(delta: float) -> void:
 		STATE_NETWORK_INIT:
 			match networkInit.state:
 				networkInit.STATE_DONE:
-					game = gamePacked.instantiate()
-					add_child(game)
-					networkInit.queue_free()
 					menuUI.setLoadingScreenText("Loading game")
 					state = STATE_GAME_LOADING
 				networkInit.STATE_ERROR_UPNP:
-					menuUI.loadUpnpFailedMenu()
+					menuUI.loadNetworkFailMenu()
+					menuUI.setNetworkFailText("Error UPNP : failed to initialize")
+					state = STATE_MENU_IDLE
+				networkInit.STATE_ERROR_CONNECTION_FAILED:
+					menuUI.loadNetworkFailMenu()
+					menuUI.setNetworkFailText("Error connection failed")
 					state = STATE_MENU_IDLE
 
 func loadMenuUI():
@@ -45,12 +47,9 @@ func host(pseudo: String, password: String, seed: int, upnp: bool) -> void:
 	G_DATA.password = password
 	G_DATA.seed = seed
 	G_DATA.playerNameDico[1] = pseudo
+	networkInit.reset()
 	
-	networkInit = NetworkInit.new()
-	add_child(networkInit)
-	networkInit.menuUI = menuUI
-	networkInitThread = Thread.new()
-	networkInitThread.start(networkInit.host.bind(upnp))
+	networkInit.host(upnp)
 	state = STATE_NETWORK_INIT
 	
 func join(pseudo: String, password: String, ipAdress: String) -> void:
@@ -58,10 +57,12 @@ func join(pseudo: String, password: String, ipAdress: String) -> void:
 	G_DATA.pseudo = pseudo
 	G_DATA.password = password
 	G_DATA.ipAdress = ipAdress
+	networkInit.reset()
 	
-	networkInit = NetworkInit.new()
-	add_child(networkInit)
-	networkInit.menuUI = menuUI
-	networkInitThread = Thread.new()
-	networkInitThread.start(networkInit.join.bind())
+	networkInit.join()
 	state = STATE_NETWORK_INIT
+
+func _on_network_init_disconnected_from_server() -> void:
+	menuUI.loadNetworkFailMenu()
+	menuUI.setNetworkFailText("Disconnected from server")
+	state = STATE_MENU_IDLE

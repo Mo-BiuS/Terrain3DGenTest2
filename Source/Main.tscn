@@ -1,6 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://lpe2ad78lunl"]
+[gd_scene load_steps=3 format=3 uid="uid://lpe2ad78lunl"]
 
 [ext_resource type="Script" path="res://Source/Main.gd" id="1_lt2bo"]
+[ext_resource type="PackedScene" uid="uid://bo156drrsfqft" path="res://Source/NetworkScripts/NetworkInit.tscn" id="2_2mta0"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_lt2bo")
+
+[node name="NetworkInit" parent="." instance=ExtResource("2_2mta0")]
+
+[connection signal="disconnectedFromServer" from="NetworkInit" to="." method="_on_network_init_disconnected_from_server"]
