@@ -140,3 +140,7 @@ script = ExtResource("1_ejyv7")
 
 [node name="WaterMesh" type="MeshInstance3D" parent="."]
 mesh = SubResource("PlaneMesh_ktwg0")
+
+[node name="OuterMesh" type="MeshInstance3D" parent="."]
+
+[node name="InnerMesh" type="MeshInstance3D" parent="."]

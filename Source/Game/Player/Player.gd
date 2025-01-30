@@ -18,8 +18,6 @@ var gravity: float = 64
 @onready var sun:OmniLight3D = $Sun
 
 func _ready():
-	if(id == multiplayer.get_unique_id()):
-		position.y+=30
 	camera.current = (id == multiplayer.get_unique_id())
 	nameLabel.visible = (id != multiplayer.get_unique_id())
 	sun.visible = (id == multiplayer.get_unique_id())

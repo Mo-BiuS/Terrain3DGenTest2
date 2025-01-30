@@ -2,8 +2,8 @@ class_name Chunk extends Node3D
 
 var noiseGenerator:NoiseGenerator = NoiseGenerator.new()
 
-@onready var terrainMeshInner:MeshInstance3D
-@onready var terrainMeshOuter:MeshInstance3D
+@onready var terrainMeshInner:MeshInstance3D = $InnerMesh
+@onready var terrainMeshOuter:MeshInstance3D = $OuterMesh
 @onready var waterMesh:MeshInstance3D = $WaterMesh
 
 var terrainMaterial:StandardMaterial3D = preload("res://Source/Game/Map/Chunk/TerrainMaterial.tres")
