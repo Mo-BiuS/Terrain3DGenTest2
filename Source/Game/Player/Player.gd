@@ -14,9 +14,12 @@ var gravity: float = 64
 @onready var camera:Camera3D = $Neck/Camera3d
 @onready var cameraRayCast:RayCast3D = $Neck/RayCast3D
 @onready var meshList:Node3D = $MeshList
+@onready var nameLabel:Label3D = $NameLabel
 
 func _ready():
 	camera.current = (id == multiplayer.get_unique_id())
+	nameLabel.visible = (id != multiplayer.get_unique_id())
+	if multiplayer.is_server():nameLabel.text = G_DATA.playerNameDico[id]
 
 func _process(delta: float) -> void:
 	cameraRayCast.force_raycast_update()

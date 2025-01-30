@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://df43ms8oxtrs0"]
+[gd_scene load_steps=7 format=3 uid="uid://df43ms8oxtrs0"]
 
 [ext_resource type="Script" path="res://Source/Game/Player/Player.gd" id="1_ao6qk"]
+[ext_resource type="FontFile" uid="uid://d0aw4bklyegh8" path="res://Ressources/Font/FSEX300.ttf" id="2_s2dwd"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_csh4g"]
 
@@ -13,6 +14,9 @@ size = Vector3(0.5, 0.5, 0.5)
 properties/0/path = NodePath(".:id")
 properties/0/spawn = true
 properties/0/replication_mode = 1
+properties/1/path = NodePath("NameLabel:text")
+properties/1/spawn = true
+properties/1/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 128, 0)
@@ -51,6 +55,13 @@ light_energy = 16.0
 light_size = 256.0
 shadow_enabled = true
 omni_range = 1024.0
+
+[node name="NameLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "NAME"
+font = ExtResource("2_s2dwd")
+font_size = 64
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_myytl")
