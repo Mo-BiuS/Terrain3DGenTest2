@@ -12,7 +12,6 @@ func addPlayer(id:int)->void:
 func isGameLoaded()->bool:
 	return mapHandler.isMapLoaded()
 func changedChunk(x:int, y:int):
-	gui.setChunkPos(x,y,mapHandler.getChunkDetailsLevel(x,y))
 	mapHandler.changedChunk(x,y)
 
 func _on_player_spawner_spawned(node: Node) -> void:

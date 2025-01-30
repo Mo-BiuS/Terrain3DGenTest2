@@ -6,9 +6,19 @@ class_name GameUI extends CanvasLayer
 
 func _process(_delta: float) -> void:
 	fpsLabel.text = "FPS : "+str(Engine.get_frames_per_second())
+	setChunkPos()
+	setPlayerPos()
 
-func setChunkPos(x:int, y:int, details:int):
-	chunkPosLabel.text = "Chunk | x:"+str(x)+", y:"+str(y)+" | Details : "+str(details)
+func setChunkPos():
+	if(G_DATA.playerFocus == null):playerPosLabel.hide()
+	else:
+		playerPosLabel.show()
+		var p:Vector3i = G_DATA.playerFocus.cPos
+		chunkPosLabel.text = "Chunk | x:"+str(p.x)+", y:"+str(p.y)
 
-func setPlayerPos(x:int, y:int, z:int):
-	playerPosLabel.text = "Player pos | x:"+str(x)+", y:"+str(y)+", z:"+str(z)
+func setPlayerPos():
+	if(G_DATA.playerFocus == null):playerPosLabel.hide()
+	else:
+		playerPosLabel.show()
+		var p:Vector3i = G_DATA.playerFocus.position
+		playerPosLabel.text = "Player pos | x:"+str(p.x)+", y:"+str(p.y)+", z:"+str(p.z)

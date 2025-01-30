@@ -3,11 +3,9 @@ class_name MapHandler extends Node
 @onready var game:Game = $".."
 @onready var chunckHandler:ChunkHandler = $ChunkHandler
 
-var playerFocus:Player
-
 func setPlayerFocus(p:Player)->void:
 	p.changedChunk.connect(changedChunk)
-	playerFocus = p
+	G_DATA.playerFocus = p
 
 func isMapLoaded()->bool:
 	return chunckHandler.isAllChunkLoaded()

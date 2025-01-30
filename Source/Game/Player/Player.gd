@@ -1,7 +1,7 @@
 class_name Player extends CharacterBody3D
 
 const SPEED = 24 #Normal 24
-const JUMP_VELOCITY = 16
+const JUMP_VELOCITY = 20
 
 var cPos:Vector3i
 @export var id:int = -1

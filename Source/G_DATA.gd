@@ -6,6 +6,7 @@ var password:String
 var seed:int
 
 var playerNameDico:Dictionary
+var playerFocus:Player
 
 func clear()->void:
 	ipAdress = ""
