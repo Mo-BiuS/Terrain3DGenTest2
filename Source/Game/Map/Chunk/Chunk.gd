@@ -82,7 +82,7 @@ func genTerrainInner()->void:
 	terrainMeshInner.material_overlay = terrainMaterial
 	terrainMeshInner.mesh = surface_tool.commit()
 	
-	terrainMeshInner.call_deferred("create_trimesh_collision")
+	if(newDetails == 1):terrainMeshInner.call_deferred("create_trimesh_collision")
 	call_deferred("add_child",terrainMeshInner)
 	if(oldterrainMeshInner!=null):oldterrainMeshInner.queue_free()
 
@@ -143,7 +143,7 @@ func genTerrainOuter()->void:
 	terrainMeshOuter.material_overlay = terrainMaterial
 	terrainMeshOuter.mesh = surface_tool.commit()
 	
-	terrainMeshOuter.call_deferred("create_trimesh_collision")
+	if(newDetails == 1):terrainMeshOuter.call_deferred("create_trimesh_collision")
 	call_deferred("add_child",terrainMeshOuter)
 	if(oldterrainMeshOuter!=null):oldterrainMeshOuter.queue_free()
 

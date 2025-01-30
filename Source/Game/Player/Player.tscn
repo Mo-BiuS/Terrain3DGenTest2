@@ -1,12 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://df43ms8oxtrs0"]
+[gd_scene load_steps=6 format=3 uid="uid://df43ms8oxtrs0"]
 
 [ext_resource type="Script" path="res://Source/Game/Player/Player.gd" id="1_ao6qk"]
 [ext_resource type="FontFile" uid="uid://d0aw4bklyegh8" path="res://Ressources/Font/FSEX300.ttf" id="2_s2dwd"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_csh4g"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_wi5j7"]
-size = Vector3(0.5, 0.5, 0.5)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pv6x0"]
 
@@ -20,19 +17,12 @@ properties/1/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 128, 0)
-collision_layer = 2
 script = ExtResource("1_ao6qk")
 
 [node name="MeshList" type="Node3D" parent="."]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="MeshList"]
 mesh = SubResource("CapsuleMesh_csh4g")
-skeleton = NodePath("../..")
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="MeshList"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -0.3)
-visible = false
-mesh = SubResource("BoxMesh_wi5j7")
 skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

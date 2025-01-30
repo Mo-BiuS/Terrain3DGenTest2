@@ -31,7 +31,6 @@ _spawnable_scenes = PackedStringArray("res://Source/Game/Player/Player.tscn")
 spawn_path = NodePath("..")
 
 [node name="GameUI" parent="." instance=ExtResource("7_epbpw")]
-visible = false
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_1ldod")

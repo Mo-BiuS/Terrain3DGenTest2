@@ -39,7 +39,7 @@ func genChunkRadius(posX:int,posY:int,radius:int,s:int):
 					chunk.init(s)
 					chunk.unload = false
 					chunk.loaded = false
-					add_child(chunk,true)
+					add_child(chunk)
 					loadedChunk[Vector2i(x+posX,y+posY)] = chunk
 				
 				if(chunk.newDetails == 1):priorityHIGH.append(chunk)
