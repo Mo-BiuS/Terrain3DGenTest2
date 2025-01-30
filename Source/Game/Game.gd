@@ -4,6 +4,10 @@ class_name Game extends Node3D
 @onready var playerHandler:PlayerHandler = $PlayerHandler
 @onready var gui:GameUI = $GameUI
 
+func reset()->void:
+	mapHandler.reset()
+	playerHandler.reset()
+
 func addServerPlayer()->void:
 	mapHandler.setPlayerFocus(playerHandler.addPlayer(1))
 	mapHandler.changedChunk(0,0)

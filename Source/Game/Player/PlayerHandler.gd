@@ -3,6 +3,10 @@ class_name PlayerHandler extends Node
 @onready var game:Game = $".."
 var playerPacked:PackedScene = preload("res://Source/Game/Player/Player.tscn")
 
+func reset()->void:
+	for i in get_children():
+		if i is Player:i.queue_free()
+	
 func _ready() -> void:
 	multiplayer.peer_disconnected.connect(removePlayer)
 

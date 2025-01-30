@@ -52,6 +52,7 @@ func host(pseudo: String, password: String, seed: int, upnp: bool) -> void:
 	G_DATA.seed = seed
 	G_DATA.playerNameDico[1] = pseudo
 	networkInit.reset()
+	game.reset()
 	
 	networkInit.host(upnp)
 	state = STATE_NETWORK_INIT
@@ -62,6 +63,7 @@ func join(pseudo: String, password: String, ipAdress: String) -> void:
 	G_DATA.password = password
 	G_DATA.ipAdress = ipAdress
 	networkInit.reset()
+	game.reset()
 	
 	networkInit.join()
 	state = STATE_NETWORK_INIT

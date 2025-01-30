@@ -8,6 +8,11 @@ var threadGenTerrainLOW:Thread = Thread.new()
 var threadGenTerrainNORMAL:Thread = Thread.new()
 var threadGenTerrainHIGH:Thread = Thread.new()
 
+func reset()->void:
+	for i in get_children():
+		if i is Chunk:i.queue_free()
+	loadedChunk.clear()
+
 func isAllChunkLoaded()->bool:
 	for i in loadedChunk.values():
 		if i.loaded == false:
