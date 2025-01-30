@@ -1,7 +1,7 @@
 class_name Player extends CharacterBody3D
 
-const SPEED = 24 #Normal 24
-const JUMP_VELOCITY = 20
+const SPEED = 24 #DEBUG 24
+const JUMP_VELOCITY = 32 #DEBUG 32
 
 var cPos:Vector3i
 @export var id:int = -1
@@ -15,10 +15,14 @@ var gravity: float = 64
 @onready var cameraRayCast:RayCast3D = $Neck/RayCast3D
 @onready var meshList:Node3D = $MeshList
 @onready var nameLabel:Label3D = $NameLabel
+@onready var sun:OmniLight3D = $Sun
 
 func _ready():
+	if(id == multiplayer.get_unique_id()):
+		position.y+=30
 	camera.current = (id == multiplayer.get_unique_id())
 	nameLabel.visible = (id != multiplayer.get_unique_id())
+	sun.visible = (id == multiplayer.get_unique_id())
 	if multiplayer.is_server():nameLabel.text = G_DATA.playerNameDico[id]
 
 func _process(delta: float) -> void:

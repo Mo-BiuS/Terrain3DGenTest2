@@ -13,4 +13,5 @@ func clear()->void:
 	pseudo = ""
 	password = ""
 	seed = -1
+	playerFocus = null
 	playerNameDico.clear()
