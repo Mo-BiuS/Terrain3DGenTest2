@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://crrqcc6236i3u"]
+[gd_scene load_steps=3 format=3 uid="uid://crrqcc6236i3u"]
 
 [ext_resource type="Script" path="res://Source/Game/UI/GameUI.gd" id="1_2rvto"]
+[ext_resource type="PackedScene" uid="uid://brkvi3w4ip1pf" path="res://Source/Game/UI/Minimap.tscn" id="2_xuowp"]
 
 [node name="GameUI" type="CanvasLayer"]
 script = ExtResource("1_2rvto")
@@ -19,3 +20,5 @@ layout_mode = 2
 [node name="PlayerPosLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 text = "Player pos :"
+
+[node name="Minimap" parent="." instance=ExtResource("2_xuowp")]

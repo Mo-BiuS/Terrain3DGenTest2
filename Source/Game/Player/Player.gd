@@ -18,6 +18,7 @@ var gravity: float = 64
 @onready var sun:OmniLight3D = $Sun
 
 func _ready():
+	G_DATA.playerList.append(self)
 	camera.current = (id == multiplayer.get_unique_id())
 	nameLabel.visible = (id != multiplayer.get_unique_id())
 	sun.visible = (id == multiplayer.get_unique_id())
@@ -29,6 +30,9 @@ func _process(delta: float) -> void:
 		camera.position.z = cameraRayCast.to_local(cameraRayCast.get_collision_point()).z-1
 	else:
 		camera.position.z = 8
+
+func getCameraRotation()->float:
+	return neck.rotation.y
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:

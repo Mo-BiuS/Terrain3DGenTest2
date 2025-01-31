@@ -6,7 +6,7 @@ var hillNoise:FastNoiseLite = FastNoiseLite.new()
 var groundNoise:FastNoiseLite = FastNoiseLite.new()
 
 func init(seed:int,posX:int,posY:int)->void:
-	baseNoise.seed = seed
+	baseNoise.seed = G_DATA.seed
 	baseNoise.offset = Vector3(posX,posY,0)
 	baseNoise.noise_type = baseNoise.TYPE_SIMPLEX_SMOOTH
 	baseNoise.fractal_octaves = 6 #default 5
@@ -14,7 +14,7 @@ func init(seed:int,posX:int,posY:int)->void:
 	baseNoise.fractal_lacunarity = 2.0 #default 2.0
 	baseNoise.fractal_gain = 0.4 #default 0.5
 	
-	montainNoise.seed = seed
+	baseNoise.seed = G_DATA.seed
 	montainNoise.offset = Vector3(posX,posY,0)
 	montainNoise.noise_type = montainNoise.TYPE_SIMPLEX_SMOOTH
 	montainNoise.fractal_octaves = 6 #default 5
@@ -22,7 +22,7 @@ func init(seed:int,posX:int,posY:int)->void:
 	montainNoise.fractal_lacunarity = 2.0 #default 2.0
 	montainNoise.fractal_gain = .4 #default 0.5
 	
-	hillNoise.seed = seed
+	baseNoise.seed = G_DATA.seed
 	hillNoise.offset = Vector3(posX,posY,0)
 	hillNoise.noise_type = hillNoise.TYPE_PERLIN
 	hillNoise.fractal_octaves = 4 #default 5
@@ -30,13 +30,19 @@ func init(seed:int,posX:int,posY:int)->void:
 	hillNoise.fractal_lacunarity = 2.0 #default 2.0
 	hillNoise.fractal_gain = .5 #default 0.5
 	
-	groundNoise.seed = seed
+	baseNoise.seed = G_DATA.seed
 	groundNoise.offset = Vector3(posX,posY,0)
 	groundNoise.noise_type = groundNoise.TYPE_PERLIN
 	groundNoise.fractal_octaves = 6 #default 5
 	groundNoise.frequency = 0.008 #default 0.01
 	groundNoise.fractal_lacunarity = 2.0 #default 2.0
 	groundNoise.fractal_gain = 0.8 #default 0.5
+
+func setOffset(posX:int,posY:int)->void:
+	baseNoise.offset = Vector3(posX,posY,0)
+	montainNoise.offset = Vector3(posX,posY,0)
+	hillNoise.offset = Vector3(posX,posY,0)
+	groundNoise.offset = Vector3(posX,posY,0)
 
 func getPoint(x,y)->float:
 	var rep:float = 0

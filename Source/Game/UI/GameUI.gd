@@ -3,11 +3,13 @@ class_name GameUI extends CanvasLayer
 @onready var chunkPosLabel:Label = $VBoxContainer/ChunkPosLabel
 @onready var fpsLabel:Label = $VBoxContainer/FpsLabel
 @onready var playerPosLabel:Label = $VBoxContainer/PlayerPosLabel
+@onready var minimap:Minimap = $Minimap
 
 func _process(_delta: float) -> void:
 	fpsLabel.text = "FPS : "+str(Engine.get_frames_per_second())
 	setChunkPos()
 	setPlayerPos()
+	minimap.refresh()
 
 func setChunkPos():
 	if(G_DATA.playerFocus == null):playerPosLabel.hide()
