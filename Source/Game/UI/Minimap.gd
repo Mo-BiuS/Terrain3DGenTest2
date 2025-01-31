@@ -7,9 +7,9 @@ var noiseGen:NoiseGenerator = NoiseGenerator.new()
 var radius:int = 96
 var mapScale:int = 4
 
-var water:Color = Color.BLUE
-var grass:Color = Color.GREEN
-var sand:Color = Color.ANTIQUE_WHITE
+var grassColor:Color = Color(.2, .4, .2)
+var sandColor:Color = Color(.8,.8,.6)
+var waterColor:Color = Color.SKY_BLUE
 
 var init:bool = false
 var oldP:Vector3i = Vector3i(0,0,0)
@@ -24,7 +24,6 @@ func refresh()->void:
 		arrow.rotation=-G_DATA.playerFocus.getCameraRotation()
 		var p:Vector3i = G_DATA.playerFocus.position/Chunk.SCALE_WIDTH
 		if(oldP != p):
-			oldP = p
 			if(!init):
 				noiseGen.init(G_DATA.seed,p.x,p.z)
 				init = true
@@ -39,10 +38,11 @@ func refresh()->void:
 						var value:float = noiseGen.getPoint((x-radius) * mapScale, (y-radius) * mapScale)
 						var color:Color
 						
-						if value <= 0:color = water
-						elif value <= .01:color = sand
-						else:color = grass
+						if value <= 0:color = waterColor
+						elif value <= .01:color = sandColor
+						else:color = grassColor+Color(0,value*.5,0)
 						
 						img.set_pixel(x, y, color)
 			textureRect.texture = ImageTexture.create_from_image(img)
 			show()
+			oldP = p
